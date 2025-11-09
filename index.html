@@ -7,13 +7,25 @@
     <style>
       :root {
         color-scheme: light dark;
-        --bg-light: #f4f8f4;
-        --bg-dark: #111;
-        --fg-light: #1f3324;
-        --fg-dark: #f2fff2;
-        --accent: #3aa75f;
-        --accent-dark: #2c7a44;
-        font-family: 'Noto Sans KR', system-ui, sans-serif;
+        --bg-light: radial-gradient(120% 120% at 10% 10%, #f9fbff 0%, #ecf3ff 38%, #e7f2ff 56%, #dde6f7 100%);
+        --bg-dark: radial-gradient(120% 120% at 10% 10%, #0f172a 0%, #111b2d 45%, #0a101f 100%);
+        --fg-light: #1f2430;
+        --fg-muted-light: rgba(31, 36, 48, 0.68);
+        --fg-dark: rgba(231, 240, 255, 0.94);
+        --fg-muted-dark: rgba(231, 240, 255, 0.7);
+        --accent: #2563eb;
+        --accent-strong: #1d4ed8;
+        --accent-soft: rgba(37, 99, 235, 0.08);
+        --shadow-light: 0 40px 80px rgba(15, 23, 42, 0.08);
+        --shadow-dark: 0 45px 90px rgba(0, 0, 0, 0.55);
+        --surface-blur: blur(28px);
+        --surface-border: rgba(255, 255, 255, 0.45);
+        --surface-border-dark: rgba(148, 163, 184, 0.35);
+        font-family: 'Segoe UI Variable', 'Noto Sans KR', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      }
+
+      [hidden] {
+        display: none !important;
       }
 
       body {
@@ -22,33 +34,269 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: linear-gradient(160deg, rgba(58, 167, 95, 0.18), rgba(24, 78, 47, 0.4)),
-          var(--bg-light);
+        padding: clamp(1rem, 3vw, 2.5rem);
+        background: var(--bg-light);
         color: var(--fg-light);
+        transition: background 0.6s ease;
       }
 
       @media (prefers-color-scheme: dark) {
         body {
-          background: linear-gradient(160deg, rgba(58, 167, 95, 0.18), rgba(24, 78, 47, 0.4)),
-            var(--bg-dark);
+          background: var(--bg-dark);
           color: var(--fg-dark);
         }
       }
 
-      main {
-        width: min(680px, 88vw);
-        padding: 3rem clamp(1.5rem, 4vw, 3rem);
-        border-radius: 24px;
-        background: rgba(255, 255, 255, 0.8);
-        backdrop-filter: blur(12px);
-        box-shadow: 0 18px 50px rgba(0, 0, 0, 0.12);
+      .surface {
+        width: min(720px, 92vw);
+        padding: clamp(2.5rem, 4vw, 3.5rem);
+        border-radius: 26px;
+        background: rgba(255, 255, 255, 0.72);
+        backdrop-filter: var(--surface-blur);
+        border: 1px solid var(--surface-border);
+        box-shadow: var(--shadow-light);
+        transition: transform 0.35s ease, box-shadow 0.35s ease, background 0.35s ease;
+      }
+
+      .surface:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 48px 90px rgba(15, 23, 42, 0.13);
       }
 
       @media (prefers-color-scheme: dark) {
-        main {
-          background: rgba(15, 30, 23, 0.75);
-          box-shadow: 0 22px 60px rgba(0, 0, 0, 0.45);
+        .surface {
+          background: rgba(15, 23, 42, 0.7);
+          border-color: var(--surface-border-dark);
+          box-shadow: var(--shadow-dark);
         }
+
+        .surface:hover {
+          box-shadow: 0 50px 100px rgba(0, 0, 0, 0.65);
+        }
+      }
+
+      .gate {
+        display: grid;
+        gap: 1.75rem;
+        text-align: center;
+        place-items: center;
+      }
+
+      #gate-form-wrapper {
+        display: grid;
+        gap: 1.5rem;
+        justify-items: center;
+      }
+
+      .gate h1 {
+        margin: 0;
+        font-size: clamp(2rem, 3.6vw, 2.7rem);
+        font-weight: 650;
+        letter-spacing: -0.02em;
+      }
+
+      .gate p {
+        margin: 0;
+        line-height: 1.7;
+        color: var(--fg-muted-light);
+        font-size: 1.05rem;
+      }
+
+      .gate form {
+        display: grid;
+        gap: 1rem;
+        width: min(360px, 90%);
+      }
+
+      .gate__welcome {
+        display: grid;
+        gap: 1.4rem;
+        place-items: center;
+        opacity: 0;
+        transform: translateY(18px) scale(0.98);
+        transition: opacity 0.45s ease, transform 0.45s ease;
+      }
+
+      .gate__welcome.is-visible {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+
+      .gate__name {
+        font-size: clamp(2rem, 4vw, 2.9rem);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        color: var(--accent-strong);
+        text-shadow: 0 18px 48px rgba(37, 99, 235, 0.26);
+        opacity: 0;
+        transform: translateY(10px);
+        transition: opacity 0.45s ease, transform 0.45s ease;
+      }
+
+      .gate__welcome.is-visible .gate__name {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      #welcome-message {
+        margin: 0;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--accent-strong);
+        opacity: 0;
+        transform: translateY(10px);
+        transition: opacity 0.35s ease, transform 0.35s ease;
+      }
+
+      .gate__welcome.reveal-cta #welcome-message {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .welcome-confirm {
+        opacity: 0;
+        transform: translateY(16px) scale(0.96);
+        pointer-events: none;
+        transition: opacity 0.35s ease, transform 0.35s ease, box-shadow 0.18s ease, filter 0.18s ease;
+      }
+
+      .gate__welcome.reveal-cta .welcome-confirm {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        pointer-events: auto;
+      }
+
+      .gate input {
+        padding: 0.95rem 1.1rem;
+        border-radius: 18px;
+        border: 1px solid transparent;
+        font-size: 1.05rem;
+        text-align: center;
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.18);
+        transition: box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        .gate input {
+          background: rgba(15, 23, 42, 0.75);
+          border-color: rgba(148, 163, 184, 0.28);
+          color: var(--fg-dark);
+        }
+      }
+
+      .gate button {
+        cursor: pointer;
+        padding: 0.95rem 1.2rem;
+        border-radius: 18px;
+        border: 1px solid transparent;
+        font-size: 1.05rem;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        background: linear-gradient(135deg, var(--accent) 0%, var(--accent-strong) 100%);
+        color: #fff;
+        box-shadow: 0 18px 30px rgba(37, 99, 235, 0.28);
+        transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+      }
+
+      .gate button:hover,
+      .gate button:focus-visible {
+        transform: translateY(-2px);
+        box-shadow: 0 20px 40px rgba(37, 99, 235, 0.32);
+        filter: brightness(1.03);
+        outline: none;
+      }
+
+      .gate button:active {
+        transform: translateY(0);
+        box-shadow: 0 14px 24px rgba(37, 99, 235, 0.24);
+      }
+
+      .gate input:focus-visible {
+        outline: none;
+        box-shadow: inset 0 0 0 2px rgba(37, 99, 235, 0.45), 0 0 0 4px rgba(37, 99, 235, 0.12);
+      }
+
+      @media (prefers-color-scheme: dark) {
+        .gate p {
+          color: var(--fg-muted-dark);
+        }
+
+        .gate button {
+          box-shadow: 0 28px 50px rgba(15, 76, 129, 0.52);
+        }
+
+        .back-button {
+          background: rgba(148, 163, 184, 0.16);
+          border-color: rgba(148, 163, 184, 0.32);
+          color: rgba(191, 219, 254, 0.92);
+        }
+
+        .back-button:hover,
+        .back-button:focus-visible {
+          background: rgba(148, 163, 184, 0.26);
+          border-color: rgba(148, 163, 184, 0.42);
+        }
+
+        header p {
+          color: var(--fg-muted-dark);
+        }
+
+        header .badge {
+          background: linear-gradient(135deg, rgba(37, 99, 235, 0.78), rgba(59, 130, 246, 0.7));
+          box-shadow: inset 0 0 0 1px rgba(226, 232, 240, 0.22), 0 24px 44px rgba(15, 23, 42, 0.55);
+        }
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      .back-button {
+        align-self: flex-start;
+        margin-bottom: 0.5rem;
+        padding: 0.65rem 1.2rem;
+        border-radius: 14px;
+        background: rgba(37, 99, 235, 0.12);
+        border: 1px solid rgba(37, 99, 235, 0.32);
+        color: var(--accent-strong);
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+      }
+
+      .back-button:hover,
+      .back-button:focus-visible {
+        transform: translateY(-1px);
+        background: rgba(37, 99, 235, 0.18);
+        border-color: rgba(37, 99, 235, 0.42);
+        outline: none;
+      }
+
+      .error {
+        color: #d14343;
+        font-size: 0.95rem;
+        min-height: 1.4em;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        .error {
+          color: #fca5a5;
+        }
+      }
+
+      main.surface {
+        display: grid;
+        gap: 2.2rem;
       }
 
       header {
@@ -65,11 +313,12 @@
         width: 64px;
         height: 64px;
         border-radius: 18px;
-        background: var(--accent);
-        color: #fff;
+        background: linear-gradient(135deg, rgba(37, 99, 235, 0.8), rgba(96, 165, 250, 0.65));
+        color: #f8fbff;
         font-weight: 700;
-        font-size: 1.4rem;
-        letter-spacing: 0.08em;
+        font-size: 1.3rem;
+        letter-spacing: 0.1em;
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22), 0 20px 38px rgba(37, 99, 235, 0.25);
       }
 
       header h1 {
@@ -78,10 +327,31 @@
         line-height: 1.25;
       }
 
+      header p {
+        margin: 0;
+        color: var(--fg-muted-light);
+        font-size: 1rem;
+      }
+
+      section {
+        padding: clamp(1.4rem, 2.5vw, 1.8rem);
+        border-radius: 20px;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.82), rgba(226, 232, 240, 0.6));
+        border: 1px solid rgba(148, 163, 184, 0.24);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55), 0 12px 30px rgba(15, 23, 42, 0.08);
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+      }
+
+      section:hover {
+        transform: translateY(-3px);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 20px 42px rgba(15, 23, 42, 0.12);
+      }
+
       section h2 {
         font-size: 1.25rem;
-        color: var(--accent-dark);
+        color: var(--accent-strong);
         margin-bottom: 0.8rem;
+        font-weight: 650;
       }
 
       ul {
@@ -90,33 +360,69 @@
         display: grid;
         gap: 0.75rem;
         font-size: 1.05rem;
-        line-height: 1.6;
+        line-height: 1.7;
       }
 
       ul li {
         position: relative;
+        padding: 0.35rem 0.35rem 0.35rem 0;
+        background: linear-gradient(90deg, rgba(37, 99, 235, 0.08), rgba(37, 99, 235, 0));
+        border-radius: 10px;
       }
 
       ul li::marker {
-        color: var(--accent-dark);
+        color: var(--accent);
         font-weight: 700;
       }
 
       footer {
         margin-top: 2.5rem;
         font-size: 0.95rem;
-        color: rgba(31, 51, 36, 0.7);
+        color: var(--fg-muted-light);
       }
 
       @media (prefers-color-scheme: dark) {
+        section {
+          background: linear-gradient(135deg, rgba(30, 41, 59, 0.82), rgba(15, 23, 42, 0.65));
+          border-color: rgba(96, 165, 250, 0.22);
+          box-shadow: inset 0 1px 0 rgba(148, 163, 184, 0.2), 0 18px 42px rgba(2, 6, 23, 0.72);
+        }
+
+        section:hover {
+          box-shadow: inset 0 1px 0 rgba(148, 163, 184, 0.26), 0 24px 54px rgba(2, 6, 23, 0.78);
+        }
+
         footer {
-          color: rgba(242, 255, 242, 0.7);
+          color: var(--fg-muted-dark);
+        }
+
+        ul li {
+          background: linear-gradient(90deg, rgba(96, 165, 250, 0.16), rgba(96, 165, 250, 0));
         }
       }
     </style>
   </head>
   <body>
-    <main>
+    <div class="surface gate" id="entry-gate" aria-labelledby="gate-title">
+      <div id="gate-form-wrapper">
+        <h1 id="gate-title">환경부 공지 열람</h1>
+        <p>환경부 담당 학생 이름을 입력하면 공지 내용을 확인할 수 있습니다.</p>
+        <form id="gate-form" novalidate>
+          <label class="sr-only" for="gate-input">담당 학생 이름</label>
+          <input id="gate-input" name="name" type="text" inputmode="search" autocomplete="off" placeholder="이름을 입력하세요" required />
+          <button type="submit">확인</button>
+        </form>
+        <p class="error" role="alert" aria-live="polite" id="gate-error"></p>
+      </div>
+      <div class="gate__welcome" id="gate-welcome" hidden aria-live="polite">
+        <div class="gate__name" id="welcome-name" aria-live="assertive"></div>
+        <p id="welcome-message" aria-live="polite"></p>
+        <button id="welcome-confirm" type="button" class="welcome-confirm">확인</button>
+      </div>
+    </div>
+
+    <main class="surface notice" id="notice" hidden aria-hidden="true">
+      <button type="button" class="back-button" id="back-button">← 뒤로</button>
       <header>
         <span class="badge">환경</span>
         <div>
@@ -140,6 +446,141 @@
         환경부 담당 학생: _____________________ &nbsp;&nbsp;|&nbsp;&nbsp; 공지일: ______년 ____월 ____일
       </footer>
     </main>
+
+    <script>
+      const ALLOWED_NAMES = ['강수현', '김나현', '홍라희', '김서진'];
+      const gate = document.getElementById('entry-gate');
+      const formWrapper = document.getElementById('gate-form-wrapper');
+      const form = document.getElementById('gate-form');
+      const input = document.getElementById('gate-input');
+      const error = document.getElementById('gate-error');
+      const welcome = document.getElementById('gate-welcome');
+      const welcomeName = document.getElementById('welcome-name');
+      const welcomeMessage = document.getElementById('welcome-message');
+      const welcomeConfirm = document.getElementById('welcome-confirm');
+      const notice = document.getElementById('notice');
+      const backButton = document.getElementById('back-button');
+      let welcomeTimer = null;
+      let noticeRevealFallback = null;
+
+      function focusNoticeHeading() {
+        const heading = notice.querySelector('h1');
+        if (!heading) return;
+        heading.tabIndex = -1;
+        heading.focus();
+        heading.addEventListener(
+          'blur',
+          () => {
+            heading.removeAttribute('tabindex');
+          },
+          { once: true }
+        );
+      }
+
+      function showWelcome(name) {
+        if (welcomeTimer) {
+          clearTimeout(welcomeTimer);
+        }
+        welcomeName.textContent = name;
+        welcomeMessage.textContent = '환영합니다!';
+        formWrapper.hidden = true;
+        welcome.hidden = false;
+        welcome.classList.remove('is-visible', 'reveal-cta');
+        requestAnimationFrame(() => {
+          welcome.classList.add('is-visible');
+          welcomeTimer = window.setTimeout(() => {
+            welcome.classList.add('reveal-cta');
+            welcomeConfirm.focus();
+            welcomeTimer = null;
+          }, 850);
+        });
+      }
+
+      function showNotice() {
+        if (welcomeTimer) {
+          clearTimeout(welcomeTimer);
+          welcomeTimer = null;
+        }
+        const finalize = () => {
+          if (noticeRevealFallback) {
+            clearTimeout(noticeRevealFallback);
+            noticeRevealFallback = null;
+          }
+          formWrapper.hidden = true;
+          welcome.hidden = true;
+          welcome.classList.remove('is-visible', 'reveal-cta');
+          welcomeMessage.textContent = '';
+          welcomeName.textContent = '';
+          gate.hidden = true;
+          gate.setAttribute('aria-hidden', 'true');
+          notice.hidden = false;
+          notice.removeAttribute('aria-hidden');
+          focusNoticeHeading();
+        };
+
+        if (!welcome.hidden && welcome.classList.contains('is-visible')) {
+          welcome.classList.remove('is-visible', 'reveal-cta');
+          const handle = () => {
+            welcome.removeEventListener('transitionend', handle);
+            finalize();
+          };
+          welcome.addEventListener('transitionend', handle, { once: true });
+          noticeRevealFallback = window.setTimeout(finalize, 280);
+        } else {
+          finalize();
+        }
+      }
+
+      function showForm() {
+        if (welcomeTimer) {
+          clearTimeout(welcomeTimer);
+          welcomeTimer = null;
+        }
+        if (noticeRevealFallback) {
+          clearTimeout(noticeRevealFallback);
+          noticeRevealFallback = null;
+        }
+        notice.hidden = true;
+        notice.setAttribute('aria-hidden', 'true');
+        gate.hidden = false;
+        gate.removeAttribute('aria-hidden');
+        welcome.hidden = true;
+        welcome.classList.remove('is-visible', 'reveal-cta');
+        welcomeMessage.textContent = '';
+        welcomeName.textContent = '';
+        formWrapper.hidden = false;
+        error.textContent = '';
+        input.value = '';
+        input.removeAttribute('aria-invalid');
+        input.focus();
+      }
+
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const value = input.value.trim();
+
+        if (ALLOWED_NAMES.includes(value)) {
+          showWelcome(value);
+        } else {
+          error.textContent = '등록된 담당 학생 이름만 입력할 수 있습니다.';
+          input.setAttribute('aria-invalid', 'true');
+          input.focus();
+        }
+      });
+
+      input.addEventListener('input', () => {
+        error.textContent = '';
+        input.removeAttribute('aria-invalid');
+      });
+
+      welcomeConfirm.addEventListener('click', () => {
+        showNotice();
+      });
+
+      backButton.addEventListener('click', () => {
+        showForm();
+      });
+    </script>
   </body>
 </html>
 
