@@ -463,20 +463,6 @@
       let welcomeTimer = null;
       let noticeRevealFallback = null;
 
-      function focusNoticeHeading() {
-        const heading = notice.querySelector('h1');
-        if (!heading) return;
-        heading.tabIndex = -1;
-        heading.focus();
-        heading.addEventListener(
-          'blur',
-          () => {
-            heading.removeAttribute('tabindex');
-          },
-          { once: true }
-        );
-      }
-
       function showWelcome(name) {
         if (welcomeTimer) {
           clearTimeout(welcomeTimer);
@@ -515,7 +501,6 @@
           gate.setAttribute('aria-hidden', 'true');
           notice.hidden = false;
           notice.removeAttribute('aria-hidden');
-          focusNoticeHeading();
         };
 
         if (!welcome.hidden && welcome.classList.contains('is-visible')) {
