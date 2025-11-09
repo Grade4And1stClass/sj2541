@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>학급 환경부 공지</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg-light: #f4f8f4;
+        --bg-dark: #111;
+        --fg-light: #1f3324;
+        --fg-dark: #f2fff2;
+        --accent: #3aa75f;
+        --accent-dark: #2c7a44;
+        font-family: 'Noto Sans KR', system-ui, sans-serif;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(160deg, rgba(58, 167, 95, 0.18), rgba(24, 78, 47, 0.4)),
+          var(--bg-light);
+        color: var(--fg-light);
+      }
+
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: linear-gradient(160deg, rgba(58, 167, 95, 0.18), rgba(24, 78, 47, 0.4)),
+            var(--bg-dark);
+          color: var(--fg-dark);
+        }
+      }
+
+      main {
+        width: min(680px, 88vw);
+        padding: 3rem clamp(1.5rem, 4vw, 3rem);
+        border-radius: 24px;
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(12px);
+        box-shadow: 0 18px 50px rgba(0, 0, 0, 0.12);
+      }
+
+      @media (prefers-color-scheme: dark) {
+        main {
+          background: rgba(15, 30, 23, 0.75);
+          box-shadow: 0 22px 60px rgba(0, 0, 0, 0.45);
+        }
+      }
+
+      header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 2.2rem;
+      }
+
+      header .badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 64px;
+        height: 64px;
+        border-radius: 18px;
+        background: var(--accent);
+        color: #fff;
+        font-weight: 700;
+        font-size: 1.4rem;
+        letter-spacing: 0.08em;
+      }
+
+      header h1 {
+        font-size: clamp(1.8rem, 3vw, 2.6rem);
+        margin: 0;
+        line-height: 1.25;
+      }
+
+      section h2 {
+        font-size: 1.25rem;
+        color: var(--accent-dark);
+        margin-bottom: 0.8rem;
+      }
+
+      ul {
+        margin: 0;
+        padding-left: 1.2rem;
+        display: grid;
+        gap: 0.75rem;
+        font-size: 1.05rem;
+        line-height: 1.6;
+      }
+
+      ul li {
+        position: relative;
+      }
+
+      ul li::marker {
+        color: var(--accent-dark);
+        font-weight: 700;
+      }
+
+      footer {
+        margin-top: 2.5rem;
+        font-size: 0.95rem;
+        color: rgba(31, 51, 36, 0.7);
+      }
+
+      @media (prefers-color-scheme: dark) {
+        footer {
+          color: rgba(242, 255, 242, 0.7);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <span class="badge">환경</span>
+        <div>
+          <h1>학급 환경부 공지</h1>
+          <p>깨끗하고 즐거운 교실을 위해 꼭 지켜 주세요</p>
+        </div>
+      </header>
+
+      <section>
+        <h2>환경부가 공지하는 학급 규칙</h2>
+        <ul>
+          <li>수업이 끝나면 자리 주변의 쓰레기를 정리하고 분리수거함에 버립니다.</li>
+          <li>교실 창문을 수시로 열어 환기를 시키고, 사용한 후에는 반드시 닫습니다.</li>
+          <li>전등과 전자기기는 사용하지 않을 때 전원을 끄고 에너지를 절약합니다.</li>
+          <li>화분과 학급 식물에 물을 줄 때는 담당 조원의 지시에 따라 과하게 주지 않습니다.</li>
+          <li>청소 시간에는 조를 나누어 맡은 구역을 책임감 있게 관리합니다.</li>
+        </ul>
+      </section>
+
+      <footer>
+        환경부 담당 학생: _____________________ &nbsp;&nbsp;|&nbsp;&nbsp; 공지일: ______년 ____월 ____일
+      </footer>
+    </main>
+  </body>
+</html>
+
