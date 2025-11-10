@@ -618,6 +618,235 @@
         color: var(--fg-muted-light);
       }
 
+      .home__panel h2 {
+        margin-top: 0;
+        margin-bottom: 1.1rem;
+        font-size: 1.3rem;
+        font-weight: 650;
+        color: var(--accent-strong);
+      }
+
+      .home__members {
+        display: grid;
+        gap: 0.6rem;
+        margin-top: 1.6rem;
+      }
+
+      .home__members ul {
+        margin: 0;
+        padding-left: 1.2rem;
+        display: grid;
+        gap: 0.4rem;
+        font-size: 1.02rem;
+      }
+
+      .uploads__info {
+        margin-bottom: 1rem;
+        padding: 0.85rem 1rem;
+        border-radius: 14px;
+        background: rgba(37, 99, 235, 0.08);
+        border: 1px solid rgba(37, 99, 235, 0.16);
+        font-size: 0.95rem;
+        color: var(--fg-muted-light);
+      }
+
+      .uploads__info strong {
+        color: var(--accent-strong);
+      }
+
+      .uploads__form {
+        display: grid;
+        gap: 0.6rem;
+        margin-bottom: 1.4rem;
+      }
+
+      .uploads__actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        align-items: center;
+      }
+
+      .uploads__button {
+        padding: 0.65rem 1.3rem;
+        border-radius: 14px;
+        border: none;
+        font-size: 0.95rem;
+        font-weight: 600;
+        background: linear-gradient(135deg, var(--accent) 0%, var(--accent-strong) 100%);
+        color: #fff;
+        box-shadow: 0 14px 24px rgba(37, 99, 235, 0.24);
+        cursor: pointer;
+        transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+      }
+
+      .uploads__button:hover,
+      .uploads__button:focus-visible {
+        transform: translateY(-2px);
+        box-shadow: 0 18px 34px rgba(37, 99, 235, 0.28);
+        outline: none;
+      }
+
+      .uploads__button:disabled {
+        background: rgba(148, 163, 184, 0.6);
+        box-shadow: none;
+        cursor: not-allowed;
+        filter: grayscale(0.3) brightness(0.9);
+      }
+
+      .uploads__list,
+      .board__list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        gap: 0.9rem;
+      }
+
+      .uploads__item,
+      .board__item {
+        padding: 1rem 1.1rem;
+        border-radius: 16px;
+        background: rgba(15, 23, 42, 0.03);
+        border: 1px solid rgba(148, 163, 184, 0.22);
+        display: grid;
+        gap: 0.65rem;
+      }
+
+      .uploads__title {
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: var(--fg-light);
+      }
+
+      .board__content {
+        margin: 0;
+        font-size: 1rem;
+        line-height: 1.75;
+        white-space: pre-wrap;
+        color: var(--fg-light);
+      }
+
+      .uploads__meta,
+      .board__meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem 1rem;
+        font-size: 0.9rem;
+        color: var(--fg-muted-light);
+      }
+
+      .uploads__actions-row,
+      .board__actions {
+        display: flex;
+        gap: 0.6rem;
+        flex-wrap: wrap;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.3rem 0.7rem;
+        border-radius: 999px;
+        background: rgba(37, 99, 235, 0.12);
+        color: var(--accent-strong);
+        font-size: 0.82rem;
+        font-weight: 600;
+      }
+
+      .pill--secondary {
+        background: rgba(148, 163, 184, 0.2);
+        color: rgba(71, 85, 105, 0.85);
+      }
+
+      .board__form {
+        display: grid;
+        gap: 1rem;
+        margin-bottom: 1.4rem;
+      }
+
+      .board__textarea {
+        min-height: 140px;
+        padding: 1rem 1.1rem;
+        border-radius: 16px;
+        border: 1px solid rgba(148, 163, 184, 0.4);
+        font-size: 1rem;
+        line-height: 1.6;
+        resize: vertical;
+        background: rgba(255, 255, 255, 0.9);
+      }
+
+      .board__textarea:focus-visible {
+        outline: none;
+        box-shadow: inset 0 0 0 2px rgba(37, 99, 235, 0.35), 0 0 0 4px rgba(37, 99, 235, 0.15);
+        border-color: rgba(37, 99, 235, 0.45);
+      }
+
+      .board__submit {
+        justify-self: flex-end;
+        padding: 0.72rem 1.6rem;
+        border-radius: 16px;
+        border: none;
+        font-size: 1rem;
+        font-weight: 600;
+        background: linear-gradient(135deg, #0ea5e9, #2563eb);
+        color: #fff;
+        box-shadow: 0 16px 26px rgba(14, 165, 233, 0.28);
+        cursor: pointer;
+        transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+      }
+
+      .board__submit:hover,
+      .board__submit:focus-visible {
+        transform: translateY(-2px);
+        box-shadow: 0 20px 36px rgba(14, 165, 233, 0.32);
+        outline: none;
+      }
+
+      .board__empty,
+      .uploads__empty {
+        margin: 0;
+        padding: 1rem 1.1rem;
+        border-radius: 14px;
+        border: 1px dashed rgba(148, 163, 184, 0.4);
+        background: rgba(15, 23, 42, 0.02);
+        font-size: 0.95rem;
+        color: var(--fg-muted-light);
+      }
+
+      .action-button {
+        padding: 0.55rem 1rem;
+        border-radius: 12px;
+        border: 1px solid rgba(148, 163, 184, 0.28);
+        background: rgba(255, 255, 255, 0.85);
+        color: inherit;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+      }
+
+      .action-button:hover,
+      .action-button:focus-visible {
+        transform: translateY(-1px);
+        background: rgba(37, 99, 235, 0.12);
+        border-color: rgba(37, 99, 235, 0.3);
+        outline: none;
+      }
+
+      .action-button--danger {
+        background: rgba(220, 38, 38, 0.12);
+        border-color: rgba(220, 38, 38, 0.32);
+        color: #b91c1c;
+      }
+
+      .action-button--danger:hover,
+      .action-button--danger:focus-visible {
+        background: rgba(220, 38, 38, 0.18);
+        border-color: rgba(220, 38, 38, 0.42);
+        color: #991b1b;
+      }
+
       @media (max-width: 960px) {
         .home {
           grid-template-columns: 1fr;
@@ -670,6 +899,30 @@
         }
 
         .home__message {
+          color: var(--fg-muted-dark);
+        }
+
+        .uploads__info {
+          background: rgba(37, 99, 235, 0.18);
+          border-color: rgba(96, 165, 250, 0.3);
+          color: var(--fg-muted-dark);
+        }
+
+        .uploads__item,
+        .board__item {
+          background: rgba(15, 23, 42, 0.7);
+          border-color: rgba(96, 165, 250, 0.25);
+        }
+
+        .uploads__title,
+        .board__content {
+          color: rgba(226, 232, 240, 0.95);
+        }
+
+        .board__empty,
+        .uploads__empty {
+          background: rgba(15, 23, 42, 0.55);
+          border-color: rgba(96, 165, 250, 0.22);
           color: var(--fg-muted-dark);
         }
       }
@@ -752,22 +1005,62 @@
           </div>
         </header>
         <section class="home__panel" data-view="dashboard">
-          <p class="home__message">곧 게시판 기능을 추가하고 환경부의 첨부파일을 업로드할 예정입니다. 조금만 기다려 주세요!</p>
+          <h2>환경부 소식</h2>
+          <p class="home__message">
+            곧 게시판 기능을 추가하고 환경부의 첨부파일을 업로드할 예정입니다. 아래에서 부원 명단과 준비 중인 기능들을 확인할 수 있습니다.
+          </p>
+          <div class="home__members">
+            <h3>환경부 부원</h3>
+            <ul>
+              <li>강수현</li>
+              <li>김나현</li>
+              <li>김서진</li>
+              <li>홍라희</li>
+            </ul>
+          </div>
         </section>
+
         <section class="home__panel" data-view="board" hidden>
-          <p class="home__message">게시판 및 건의함 기능이 준비 중입니다. 의견이나 질문이 있다면 환경부 담당 학생에게 알려 주세요.</p>
+          <h2>게시판 및 건의함</h2>
+          <form id="board-form" class="board__form">
+            <label for="board-message" class="sr-only">게시글 내용</label>
+            <textarea id="board-message" class="board__textarea" placeholder="건의 사항이나 의견을 입력해 주세요." required></textarea>
+            <button type="submit" class="board__submit">게시글 등록</button>
+          </form>
+          <p class="board__empty" id="board-empty" hidden>아직 등록된 글이 없습니다. 첫 번째 글을 남겨 보세요!</p>
+          <ul class="board__list" id="board-list"></ul>
         </section>
+
         <section class="home__panel" data-view="uploads" hidden>
-          <p class="home__message">첨부파일 업로드 기능을 개발하고 있어요. 완성되면 여기에서 환경부 자료를 쉽게 등록하고 관리할 수 있습니다.</p>
+          <h2>첨부파일 관리</h2>
+          <div class="uploads__info">
+            <strong>환경부 부원 전용</strong> 기능입니다. 업로드된 파일은 이 브라우저에만 저장되며, 환경부 부원만 삭제할 수 있습니다.
+          </div>
+          <form id="upload-form" class="uploads__form">
+            <div class="uploads__actions">
+              <input type="file" id="file-upload" multiple />
+              <button type="button" class="uploads__button" id="upload-button">선택한 파일 업로드</button>
+            </div>
+          </form>
+          <p class="uploads__empty" id="uploads-empty" hidden>등록된 첨부파일이 없습니다. 새 자료를 업로드해 주세요.</p>
+          <ul class="uploads__list" id="uploads-list"></ul>
         </section>
+
         <section class="home__panel" data-view="settings" hidden>
-          <p class="home__message">환경부 시스템 설정 페이지가 곧 제공됩니다. 사용자 맞춤형 환경을 준비하고 있어요.</p>
+          <h2>환경부 시스템 안내</h2>
+          <p class="home__message">
+            환경부 홈의 모든 기능은 단계적으로 확장될 예정입니다. 필요한 기능이 있다면 게시판 및 건의함을 통해 의견을 전달해 주세요.
+          </p>
         </section>
       </div>
     </section>
 
     <script>
       const ALLOWED_NAMES = ['강수현', '김나현', '홍라희', '김서진'];
+      const STORAGE_PREFIX = 'environmentNotice';
+      const ATTACHMENT_STORAGE_KEY = `${STORAGE_PREFIX}:attachments`;
+      const POST_STORAGE_KEY = `${STORAGE_PREFIX}:posts`;
+
       const gate = document.getElementById('entry-gate');
       const formWrapper = document.getElementById('gate-form-wrapper');
       const form = document.getElementById('gate-form');
@@ -784,18 +1077,196 @@
       const backButton = document.getElementById('back-button');
       const menuButtons = document.querySelectorAll('.menu-button');
       const homePanels = document.querySelectorAll('.home__panel');
+      const boardForm = document.getElementById('board-form');
+      const boardTextarea = document.getElementById('board-message');
+      const boardList = document.getElementById('board-list');
+      const boardEmpty = document.getElementById('board-empty');
+      const fileUpload = document.getElementById('file-upload');
+      const uploadButton = document.getElementById('upload-button');
+      const uploadsList = document.getElementById('uploads-list');
+      const uploadsEmpty = document.getElementById('uploads-empty');
+
       let welcomeTimer = null;
       let noticeRevealFallback = null;
       let currentHomeView = 'dashboard';
+      let currentUser = null;
+      let currentUserIsMember = false;
+      let attachments = [];
+      let posts = [];
+
+      function createId() {
+        if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+          return crypto.randomUUID();
+        }
+        return `id-${Date.now()}-${Math.random().toString(16).slice(2, 10)}`;
+      }
+
+      function formatBytes(bytes) {
+        if (!bytes) return '0 B';
+        const units = ['B', 'KB', 'MB', 'GB'];
+        const index = Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), units.length - 1);
+        const value = bytes / Math.pow(1024, index);
+        return `${value.toFixed(value >= 10 || index === 0 ? 0 : 1)} ${units[index]}`;
+      }
+
+      function formatDate(dateString) {
+        try {
+          return new Intl.DateTimeFormat('ko-KR', {
+            dateStyle: 'medium',
+            timeStyle: 'short'
+          }).format(new Date(dateString));
+        } catch (error) {
+          return new Date(dateString).toLocaleString();
+        }
+      }
+
+      function loadFromStorage(key) {
+        try {
+          const raw = localStorage.getItem(key);
+          if (!raw) return [];
+          const parsed = JSON.parse(raw);
+          return Array.isArray(parsed) ? parsed : [];
+        } catch (error) {
+          console.warn('데이터를 불러오는 중 문제가 발생했습니다.', error);
+          return [];
+        }
+      }
+
+      function saveAttachments() {
+        try {
+          localStorage.setItem(ATTACHMENT_STORAGE_KEY, JSON.stringify(attachments));
+        } catch (error) {
+          console.warn('첨부파일 정보를 저장하는 중 문제가 발생했습니다.', error);
+        }
+      }
+
+      function savePosts() {
+        try {
+          localStorage.setItem(POST_STORAGE_KEY, JSON.stringify(posts));
+        } catch (error) {
+          console.warn('게시글 정보를 저장하는 중 문제가 발생했습니다.', error);
+        }
+      }
+
+      function renderAttachments() {
+        if (!uploadsList || !uploadsEmpty) return;
+        uploadsList.innerHTML = '';
+        if (!attachments.length) {
+          uploadsEmpty.hidden = false;
+          return;
+        }
+        uploadsEmpty.hidden = true;
+        const sorted = [...attachments].sort((a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt));
+        sorted.forEach((attachment) => {
+          const item = document.createElement('li');
+          item.className = 'uploads__item';
+          item.dataset.id = attachment.id;
+
+          const title = document.createElement('div');
+          title.className = 'uploads__title';
+          title.textContent = attachment.name;
+          item.appendChild(title);
+
+          const meta = document.createElement('div');
+          meta.className = 'uploads__meta';
+          const uploader = document.createElement('span');
+          uploader.className = 'pill';
+          uploader.textContent = `${attachment.uploadedBy}`;
+          const size = document.createElement('span');
+          size.className = 'pill pill--secondary';
+          size.textContent = formatBytes(attachment.size);
+          const date = document.createElement('span');
+          date.textContent = formatDate(attachment.uploadedAt);
+          meta.append(uploader, size, date);
+          item.appendChild(meta);
+
+          const actions = document.createElement('div');
+          actions.className = 'uploads__actions-row';
+          const downloadLink = document.createElement('a');
+          downloadLink.className = 'action-button';
+          downloadLink.href = attachment.dataUrl || '';
+          downloadLink.download = attachment.name;
+          downloadLink.textContent = '다운로드';
+          downloadLink.target = '_blank';
+          actions.appendChild(downloadLink);
+
+          if (currentUserIsMember) {
+            const deleteButton = document.createElement('button');
+            deleteButton.type = 'button';
+            deleteButton.className = 'action-button action-button--danger';
+            deleteButton.dataset.action = 'delete-attachment';
+            deleteButton.dataset.id = attachment.id;
+            deleteButton.textContent = '삭제';
+            actions.appendChild(deleteButton);
+          }
+
+          item.appendChild(actions);
+          uploadsList.appendChild(item);
+        });
+      }
+
+      function renderPosts() {
+        if (!boardList || !boardEmpty) return;
+        boardList.innerHTML = '';
+        if (!posts.length) {
+          boardEmpty.hidden = false;
+          return;
+        }
+        boardEmpty.hidden = true;
+        const sorted = [...posts].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        sorted.forEach((post) => {
+          const item = document.createElement('li');
+          item.className = 'board__item';
+          item.dataset.id = post.id;
+
+          const meta = document.createElement('div');
+          meta.className = 'board__meta';
+          const author = document.createElement('span');
+          author.className = 'pill';
+          author.textContent = post.author || '익명';
+          const date = document.createElement('span');
+          date.className = 'pill pill--secondary';
+          date.textContent = formatDate(post.createdAt);
+          meta.append(author, date);
+          item.appendChild(meta);
+
+          const content = document.createElement('p');
+          content.className = 'board__content';
+          content.textContent = post.content;
+          item.appendChild(content);
+
+          if (currentUserIsMember) {
+            const actions = document.createElement('div');
+            actions.className = 'board__actions';
+            const deleteButton = document.createElement('button');
+            deleteButton.type = 'button';
+            deleteButton.className = 'action-button action-button--danger';
+            deleteButton.dataset.action = 'delete-post';
+            deleteButton.dataset.id = post.id;
+            deleteButton.textContent = '삭제';
+            actions.appendChild(deleteButton);
+            item.appendChild(actions);
+          }
+
+          boardList.appendChild(item);
+        });
+      }
+
+      function updateHomePermissions() {
+        const isMember = currentUserIsMember;
+        if (fileUpload) {
+          fileUpload.disabled = !isMember;
+        }
+        if (uploadButton) {
+          uploadButton.disabled = !isMember;
+          uploadButton.title = isMember ? '' : '환경부 부원만 첨부파일을 업로드할 수 있습니다.';
+        }
+      }
 
       function activateHomeView(view) {
         currentHomeView = view;
         homePanels.forEach((panel) => {
-          if (panel.dataset.view === view) {
-            panel.hidden = false;
-          } else {
-            panel.hidden = true;
-          }
+          panel.hidden = panel.dataset.view !== view;
         });
         menuButtons.forEach((button) => {
           const isActive = button.dataset.view === view;
@@ -808,15 +1279,98 @@
         });
       }
 
+      function handleUpload() {
+        if (!currentUserIsMember) {
+          alert('환경부 부원만 첨부파일을 업로드할 수 있습니다.');
+          if (fileUpload) fileUpload.value = '';
+          return;
+        }
+        if (!fileUpload || !fileUpload.files || !fileUpload.files.length) {
+          alert('업로드할 파일을 선택해 주세요.');
+          return;
+        }
+
+        const files = Array.from(fileUpload.files);
+        let processed = 0;
+
+        files.forEach((file) => {
+          const reader = new FileReader();
+          reader.onload = () => {
+            attachments.unshift({
+              id: createId(),
+              name: file.name,
+              size: file.size,
+              type: file.type,
+              dataUrl: reader.result,
+              uploadedBy: currentUser || '환경부',
+              uploadedAt: new Date().toISOString()
+            });
+            processed += 1;
+            if (processed === files.length) {
+              saveAttachments();
+              renderAttachments();
+            }
+          };
+          reader.onerror = () => {
+            processed += 1;
+            if (processed === files.length) {
+              saveAttachments();
+              renderAttachments();
+            }
+          };
+          reader.readAsDataURL(file);
+        });
+
+        fileUpload.value = '';
+      }
+
+      function handleBoardSubmit(event) {
+        event.preventDefault();
+        if (!boardTextarea) return;
+        const content = boardTextarea.value.trim();
+        if (!content) {
+          alert('게시글 내용을 입력해 주세요.');
+          boardTextarea.focus();
+          return;
+        }
+
+        posts.unshift({
+          id: createId(),
+          author: currentUser || '익명',
+          content,
+          createdAt: new Date().toISOString()
+        });
+        savePosts();
+        renderPosts();
+        boardTextarea.value = '';
+        boardTextarea.focus();
+      }
+
+      function initializeData() {
+        attachments = loadFromStorage(ATTACHMENT_STORAGE_KEY);
+        posts = loadFromStorage(POST_STORAGE_KEY);
+        renderAttachments();
+        renderPosts();
+        updateHomePermissions();
+        if (menuButtons.length) {
+          activateHomeView('dashboard');
+        }
+      }
+
       function showWelcome(name) {
         if (welcomeTimer) {
           clearTimeout(welcomeTimer);
         }
+        currentUser = name;
+        currentUserIsMember = ALLOWED_NAMES.includes(name);
         welcomeName.textContent = name;
         welcomeMessage.textContent = '환영합니다!';
         formWrapper.hidden = true;
         welcome.hidden = false;
         welcome.classList.remove('is-visible', 'reveal-cta');
+        updateHomePermissions();
+        renderAttachments();
+        renderPosts();
         requestAnimationFrame(() => {
           welcome.classList.add('is-visible');
           welcomeTimer = window.setTimeout(() => {
@@ -881,6 +1435,8 @@
           clearTimeout(noticeRevealFallback);
           noticeRevealFallback = null;
         }
+        currentUser = null;
+        currentUserIsMember = false;
         notice.hidden = true;
         notice.setAttribute('aria-hidden', 'true');
         gate.hidden = false;
@@ -905,6 +1461,9 @@
         if (menuButtons.length) {
           activateHomeView('dashboard');
         }
+        updateHomePermissions();
+        renderAttachments();
+        renderPosts();
       }
 
       form.addEventListener('submit', (event) => {
@@ -945,6 +1504,8 @@
           if (menuButtons.length) {
             activateHomeView('dashboard');
           }
+          renderAttachments();
+          renderPosts();
         });
       }
 
@@ -954,12 +1515,51 @@
             activateHomeView(button.dataset.view);
           });
         });
-        activateHomeView('dashboard');
+      }
+
+      if (boardForm && boardTextarea) {
+        boardForm.addEventListener('submit', handleBoardSubmit);
+      }
+
+      if (boardList) {
+        boardList.addEventListener('click', (event) => {
+          const button = event.target.closest('[data-action="delete-post"]');
+          if (!button) return;
+          if (!currentUserIsMember) {
+            alert('환경부 부원만 게시글을 삭제할 수 있습니다.');
+            return;
+          }
+          const { id } = button.dataset;
+          posts = posts.filter((post) => post.id !== id);
+          savePosts();
+          renderPosts();
+        });
+      }
+
+      if (uploadButton) {
+        uploadButton.addEventListener('click', handleUpload);
+      }
+
+      if (uploadsList) {
+        uploadsList.addEventListener('click', (event) => {
+          const button = event.target.closest('[data-action="delete-attachment"]');
+          if (!button) return;
+          if (!currentUserIsMember) {
+            alert('환경부 부원만 첨부파일을 삭제할 수 있습니다.');
+            return;
+          }
+          const { id } = button.dataset;
+          attachments = attachments.filter((attachment) => attachment.id !== id);
+          saveAttachments();
+          renderAttachments();
+        });
       }
 
       backButton.addEventListener('click', () => {
         showForm();
       });
+
+      initializeData();
     </script>
   </body>
 </html>
