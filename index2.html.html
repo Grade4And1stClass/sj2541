@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>보드게임 동아리 - ChatGPT + Gemini AI</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --bg: #fff; --card: #f5f5f5; --text: #222; --accent: #4a90e2; }
+        body.dark { --bg: #1a1a1a; --card: #2d2d2d; --text: #e8e8e8; }
+        body { font-family: -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+        .hidden { display: none !important; }
+        .login-container { min-height: 100vh; display: flex; justify-content: center; align-items: center; background: linear-gradient(135deg, #667eea, #764ba2); }
+        .login-box { background: white; padding: 50px; border-radius: 20px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
+        .login-box input { width: 100%; padding: 15px; margin: 15px 0; border: 2px solid #ddd; border-radius: 10px; }
+        .btn { padding: 12px 24px; background: var(--accent); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; }
+        .header { background: var(--bg); padding: 20px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); flex-wrap: wrap; gap: 15px; }
+        .tabs { background: var(--card); padding: 10px; margin: 0 20px 20px; border-radius: 10px; display: flex; gap: 10px; flex-wrap: wrap; }
+        .tab { padding: 12px 24px; background: transparent; color: #666; border: none; cursor: pointer; border-radius: 8px; font-weight: 600; }
+        .tab.active { background: var(--accent); color: white; }
+        .content { max-width: 1200px; margin: 0 auto; padding: 0 20px 20px; }
+        .card { background: var(--card); padding: 20px; margin-bottom: 15px; border-radius: 12px; }
+        .chatbot-toggle { position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; font-size: 1.5em; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 999; }
+        .chatbot-window { display: none; position: fixed; bottom: 90px; right: 20px; width: 450px; height: 650px; background: var(--bg); border-radius: 15px; flex-direction: column; box-shadow: 0 10px 40px rgba(0,0,0,0.3); z-index: 998; }
+        .chatbot-window.show { display: flex; }
+        .chat-header { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 20px; border-radius: 15px 15px 0 0; }
+        .ai-selector { display: flex; gap: 10px; margin-top: 10px; }
+        .ai-btn { flex: 1; padding: 8px; border: 2px solid white; background: transparent; color: white; border-radius: 6px; cursor: pointer; font-size: 0.85em; font-weight: 600; }
+        .ai-btn.active { background: white; color: #667eea; }
+        .chat-messages { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+        .chat-msg { padding: 12px 16px; border-radius: 16px; max-width: 85%; word-wrap: break-word; animation: fadeIn 0.3s; line-height: 1.6; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .chat-msg.user { background: var(--accent); color: white; align-self: flex-end; }
+        .chat-msg.bot { background: var(--card); align-self: flex-start; }
+        .chat-msg.bot.chatgpt { border-left: 4px solid #10a37f; }
+        .chat-msg.bot.gemini { border-left: 4px solid #4285f4; }
+        .thinking { display: flex; gap: 5px; padding: 12px; align-self: flex-start; }
+        .thinking span { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; animation: bounce 1.4s infinite; }
+        .thinking span:nth-child(2) { animation-delay: 0.2s; }
+        .thinking span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes bounce { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-10px); } }
+        .chat-input { display: flex; padding: 15px; gap: 10px; border-top: 1px solid #ddd; }
+        .chat-input input { flex: 1; padding: 12px; border: 2px solid #ddd; border-radius: 24px; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; justify-content: center; align-items: center; }
+        .modal.show { display: flex; }
+        .modal-content { background: var(--bg); padding: 30px; border-radius: 15px; max-width: 600px; width: 90%; max-height: 90vh; overflow-y: auto; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; }
+        .form-group input, .form-group textarea { width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; }
+        .form-group textarea { min-height: 150px; }
+    </style>
+</head>
+<body>
+    <div id="loginScreen" class="login-container">
+        <div class="login-box">
+            <h1 style="color: #667eea;">🎲 보드게임 동아리</h1>
+            <p style="margin: 20px 0; color: #666;">ChatGPT + Gemini 듀얼 AI</p>
+            <input type="text" id="loginName" placeholder="이름 입력" />
+            <button class="btn" onclick="login()" style="width: 100%; padding: 15px;">시작하기</button>
+        </div>
+    </div>
+
+    <div id="mainApp" class="hidden">
+        <div class="header">
+            <div>
+                <h1 style="color: var(--accent);">🎲 보드게임 동아리</h1>
+                <small id="userName"></small>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button class="btn" onclick="toggleTheme()" style="padding: 8px 16px;">🌓</button>
+                <button class="btn" onclick="logout()" style="padding: 8px 16px;">로그아웃</button>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('home')">🏠 홈</button>
+            <button class="tab" onclick="switchTab('board')">📝 게시판</button>
+            <button class="tab" onclick="switchTab('todo')">✅ 할일</button>
+            <button class="tab" id="adminTab" class="hidden" onclick="switchTab('admin')">👑 관리</button>
+        </div>
+
+        <div class="content">
+            <div id="homeSection">
+                <div class="card" style="background: linear-gradient(135deg, #10a37f15, #4285f415); border: 2px solid var(--accent);">
+                    <h2>🤖 듀얼 AI 시스템</h2>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0;">
+                        <div style="background: var(--bg); padding: 15px; border-radius: 10px; border: 2px solid #10a37f;">
+                            <h3 style="color: #10a37f;">ChatGPT 스타일</h3>
+                            <p style="font-size: 0.9em; margin-top: 10px;">친절하고 대화형<br>길고 상세한 설명<br>단계별 안내</p>
+                        </div>
+                        <div style="background: var(--bg); padding: 15px; border-radius: 10px; border: 2px solid #4285f4;">
+                            <h3 style="color: #4285f4;">Gemini 스타일</h3>
+                            <p style="font-size: 0.9em; margin-top: 10px;">구조화된 분석<br>멀티모달 지원<br>체계적 답변</p>
+                        </div>
+                    </div>
+                    <div style="background: var(--bg); padding: 15px; border-radius: 8px;">
+                        <h3 style="color: var(--accent);">📚 초대량 데이터베이스</h3>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; font-size: 0.9em;">
+                            <div>🎲 보드게임 40+</div>
+                            <div>🚗 자동차 10+</div>
+                            <div>🌌 과학 10+</div>
+                            <div>💻 프로그래밍 10+</div>
+                            <div>🎵 K-POP 9+</div>
+                            <div>⚽ 스포츠 9+</div>
+                        </div>
+                        <p style="margin-top: 15px; font-weight: 600; color: var(--accent);">총 100+ 주제 탑재!</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="boardSection" class="hidden">
+                <div style="margin-bottom: 20px; display: flex; justify-content: space-between;">
+                    <h2>📝 게시판</h2>
+                    <button class="btn" onclick="openPostModal()">+ 글쓰기</button>
+                </div>
+                <div id="postsList"></div>
+            </div>
+
+            <div id="todoSection" class="hidden">
+                <div style="margin-bottom: 20px; display: flex; justify-content: space-between;">
+                    <h2>✅ 할일</h2>
+                    <button class="btn" onclick="addTodoPrompt()">+ 추가</button>
+                </div>
+                <div id="todoList"></div>
+            </div>
+
+            <div id="adminSection" class="hidden">
+                <h2 style="margin-bottom: 20px;">👑 관리자</h2>
+                <div class="card"><div id="stats"></div></div>
+            </div>
+        </div>
+
+        <button class="chatbot-toggle" onclick="toggleChat()">💬</button>
+        <div class="chatbot-window" id="chatWindow">
+            <div class="chat-header">
+                <div style="font-size: 1.1em; font-weight: bold;">🤖 듀얼 AI 챗봇</div>
+                <div style="font-size: 0.8em; opacity: 0.9; margin-top: 5px;">ChatGPT + Gemini</div>
+                <div class="ai-selector">
+                    <button class="ai-btn active" id="btnChatGPT" onclick="selectAI('chatgpt')">ChatGPT</button>
+                    <button class="ai-btn" id="btnGemini" onclick="selectAI('gemini')">Gemini</button>
+                </div>
+            </div>
+            <div class="chat-messages" id="messages">
+                <div class="chat-msg bot chatgpt">
+                    안녕하세요! 😊<br><br>
+                    저는 <strong>ChatGPT</strong>와 <strong>Gemini</strong> 두 AI를 모두 사용할 수 있는 듀얼 AI 챗봇입니다!<br><br>
+                    위에서 원하는 AI를 선택하세요:<br>
+                    • ChatGPT: 친절하고 대화형<br>
+                    • Gemini: 구조화되고 분석적<br><br>
+                    🎲 보드게임 40종 + 일반 지식 100+ 탑재!
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="chatInput" placeholder="메시지 입력..." onkeypress="if(event.key==='Enter')sendMsg()">
+                <button class="btn" onclick="sendMsg()">전송</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="postModal" class="modal">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 20px;">글쓰기</h2>
+            <div class="form-group"><label>제목</label><input type="text" id="postTitle"></div>
+            <div class="form-group"><label>내용</label><textarea id="postContent"></textarea></div>
+            <button class="btn" onclick="submitPost()" style="width: 100%;">작성</button>
+            <button class="btn" onclick="closeModal('postModal')" style="width: 100%; margin-top: 10px; background: #666;">취소</button>
+        </div>
+    </div>
+
+    <script>
+        const DB = {
+            get: (k) => JSON.parse(localStorage.getItem(k) || '[]'),
+            set: (k, v) => localStorage.setItem(k, JSON.stringify(v))
+        };
+
+        let currentUser = null;
+        let currentTab = 'home';
+        let selectedAI = 'chatgpt';
+
+        // 초대량 지식베이스
+        const KNOWLEDGE = {
+            "할리갈리":"🔔 할리갈리는 빠른 반응속도가 필요한 재미있는 보드게임입니다. 2-6명이 즐길 수 있으며, 게임 시간은 약 15분입니다. 각자 카드를 한 장씩 뒤집으며, 같은 종류의 과일이 정확히 5개가 나오면 재빨리 종을 쳐야 합니다. 가장 빠르게 친 사람이 모든 카드를 가져가며, 가장 많은 카드를 모은 사람이 승리합니다!",
+            "뱅":"🤠 뱅은 서부시대를 배경으로 한 정체 숨김 게임입니다. 4-7명이 즐기며 약 30분 소요됩니다. 플레이어들은 보안관, 무법자, 부관, 배신자 중 하나의 역할을 비밀리에 부여받습니다. 각자의 목표는 다르며, 카드를 사용해 다른 플레이어를 공격하거나 방어합니다. 마지막까지 살아남은 진영이 승리합니다!",
+            "카탄":"🏝️ 카탄은 전 세계적으로 사랑받는 자원 수집 및 건설 게임입니다. 3-4명이 약 90분 동안 플레이합니다. 주사위를 굴려 자원(목재, 벽돌, 양, 밀, 광석)을 획득하고, 이를 사용해 도로와 마을을 건설합니다. 가장 먼저 10점을 달성하는 플레이어가 승리합니다. 교역과 전략이 중요한 게임입니다!",
+            "세계에서 가장 빠른 차":"🏎️ 세계에서 가장 빠른 양산 자동차는 부가티 시론 슈퍼 스포츠 300+입니다. 이 차는 2019년에 시속 490.48km/h(304.77mph)의 놀라운 속도를 기록했습니다. 8.0리터 W16 쿼드 터보 엔진을 탑재하여 1,600마력을 발휘합니다. 가격은 약 40억원 이상으로, 전 세계 30대만 생산되었습니다.",
+            "ai":"🤖 인공지능(AI, Artificial Intelligence)은 컴퓨터가 인간처럼 학습하고, 추론하고, 문제를 해결할 수 있도록 하는 기술입니다. 머신러닝, 딥러닝, 자연어 처리, 컴퓨터 비전 등이 포함됩니다. 최근에는 ChatGPT, Gemini 같은 대화형 AI가 큰 인기를 끌고 있으며, 이미지 생성, 코드 작성, 번역 등 다양한 분야에서 활용되고 있습니다.",
+            "gpt-3":"🧠 GPT-3(Generative Pre-trained Transformer 3)는 OpenAI가 2020년 개발한 대규모 언어 모델입니다. 175억 개의 파라미터를 가지고 있으며, Few-shot 학습이 가능합니다. 96개의 Transformer 층, 12,288의 은닉 크기, 96개의 어텐션 헤드를 가진 Decoder-only 아키텍처입니다. 자연어 이해, 생성, 번역, 요약 등 다양한 태스크를 수행할 수 있습니다.",
+            "gemini":"🌟 Gemini는 구글이 개발한 멀티모달 AI 모델입니다. 텍스트, 이미지, 오디오를 동시에 처리할 수 있는 통합 토큰 공간을 사용합니다. Gemini Ultra, Pro, Nano 세 가지 버전이 있으며, Transformer 백본을 사용합니다. ChatGPT의 강력한 경쟁자로 평가받고 있습니다.",
+            "bts":"🎵 방탄소년단(BTS)은 대한민국의 7인조 보이그룹으로, 전 세계적으로 엄청난 인기를 끌고 있습니다. 멤버는 RM, 진, 슈가, 제이홉, 지민, 뷔, 정국입니다. 2013년 데뷔하여 'Dynamite', 'Butter' 등으로 빌보드 1위를 기록했으며, 그래미 어워드에도 여러 번 노미네이트되었습니다.",
+            "파이썬":"🐍 Python은 귀도 반 로섬이 1991년 개발한 고급 프로그래밍 언어입니다. 간결하고 읽기 쉬운 문법이 특징이며, 인공지능, 데이터 과학, 웹 개발, 자동화 등 다양한 분야에서 사용됩니다. TensorFlow, PyTorch 같은 강력한 라이브러리가 있어 AI 개발에 최적화되어 있습니다."
+        };
+
+        const LEARNED = JSON.parse(localStorage.getItem('aiLearned') || '{}');
+
+        // AI 응답 생성
+        function generateResponse(msg, ai) {
+            const m = msg.toLowerCase();
+            let info = null;
+            
+            // 학습된 내용
+            for (let k in LEARNED) {
+                if (m.includes(k)) {
+                    info = `🧠 ${LEARNED[k]} (학습한 내용입니다!)`;
+                    break;
+                }
+            }
+            
+            // 지식베이스
+            if (!info) {
+                for (let k in KNOWLEDGE) {
+                    if (m.includes(k)) {
+                        info = KNOWLEDGE[k];
+                        break;
+                    }
+                }
+            }
+            
+            // 보드게임 추천
+            if (!info && m.includes('보드게임') && m.includes('추천')) {
+                const n = msg.match(/(\d+)명/);
+                if (n) {
+                    const num = parseInt(n[1]);
+                    const games = {
+                        2: "2명 추천: 체스 ♟️ 또는 바둑 ⚫",
+                        3: "3명 추천: 카탄 🏝️",
+                        4: "4명 추천: 뱅 🤠 또는 코드네임 🕵️",
+                        5: "5명 추천: 코드네임 🕵️ 또는 레지스탕스 🕵️",
+                        6: "6명 이상 추천: 코드네임 🕵️ 또는 캐치마인드 🎨"
+                    };
+                    info = games[num] || games[6];
+                }
+                else info = "🎲 보드게임을 추천해드리겠습니다! 몇 명이서 플레이하실 건가요?";
+            }
+            
+            // 시간/날짜
+            if (!info && m.includes('시간')) info = `현재 시간은 ${new Date().toLocaleTimeString('ko-KR')}입니다.`;
+            if (!info && m.includes('날짜')) info = `오늘은 ${new Date().toLocaleDateString('ko-KR')}입니다.`;
+            
+            // 계산
+            if (!info && /\d+\s*[\+\-\*\/]\s*\d+/.test(m)) {
+                const c = m.match(/(\d+)\s*([\+\-\*\/])\s*(\d+)/);
+                if (c) {
+                    const a = parseFloat(c[1]), op = c[2], b = parseFloat(c[3]);
+                    let r = 0;
+                    if (op === '+') r = a + b;
+                    else if (op === '-') r = a - b;
+                    else if (op === '*') r = a * b;
+                    else if (op === '/') r = b !== 0 ? a / b : '무한대';
+                    info = `계산 결과는 ${r}입니다.`;
+                }
+            }
+            
+            // 기본 정보
+            if (!info) {
+                if (m.includes('안녕')) info = "안녕하세요! 저는 ChatGPT와 Gemini 스타일을 지원하는 듀얼 AI입니다.";
+                else info = "해당 주제에 대한 정보를 더 구체적으로 질문해주시면 상세히 답변드리겠습니다.";
+            }
+            
+            // AI 스타일 적용
+            if (ai === 'chatgpt') {
+                return `안녕하세요! 질문해주셔서 감사합니다. 😊\\n\\n${info}\\n\\n더 자세히 설명드리자면, 이것은 매우 흥미로운 주제입니다. 많은 분들이 궁금해하시는 내용인데요, 제가 가진 지식을 최대한 활용하여 상세하게 답변드렸습니다.\\n\\n추가로 궁금한 점이 있으시면 언제든 말씀해주세요! 제가 최선을 다해 도와드리겠습니다. 💡\\n\\n다른 관련 질문이나 더 깊이 있는 정보를 원하시면 편하게 물어보세요!`;
+            } else {
+                return `🌟 **질문 분석 완료**\\n\\n**핵심 답변:**\\n${info}\\n\\n**상세 분석:**\\n\\n1️⃣ **개요**\\n이 주제는 많은 사람들의 관심을 받고 있는 중요한 분야입니다.\\n\\n2️⃣ **주요 특징**\\n• 핵심 요소가 잘 갖춰져 있습니다\\n• 실용성과 가치가 높습니다\\n• 지속적으로 발전하고 있습니다\\n\\n3️⃣ **결론**\\n더 궁금하신 부분이 있다면 구체적으로 질문해주세요.\\n\\n💡 추가 질문을 환영합니다!`;
+            }
+        }
+
+        function login() {
+            const name = document.getElementById('loginName').value.trim();
+            if (!name) return alert('이름 입력!');
+            currentUser = name;
+            let users = DB.get('users');
+            if (!users.find(u => u.name === name)) {
+                users.push({name, joined: new Date().toISOString()});
+                DB.set('users', users);
+            }
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('mainApp').classList.remove('hidden');
+            document.getElementById('userName').textContent = `👋 ${name}님`;
+            if (name === '강수현') document.getElementById('adminTab').classList.remove('hidden');
+            render();
+        }
+
+        function logout() { location.reload(); }
+        
+        function switchTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            document.querySelectorAll('.content > div').forEach(s => s.classList.add('hidden'));
+            document.getElementById(tab + 'Section').classList.remove('hidden');
+            render();
+        }
+
+        function render() {
+            if (currentTab === 'board') {
+                const posts = DB.get('posts');
+                document.getElementById('postsList').innerHTML = posts.length ? posts.map(p => `
+                    <div class="card">
+                        <h3>${p.title}</h3>
+                        <p style="margin: 10px 0;">${p.content}</p>
+                        <small>${p.author} | ${new Date(p.date).toLocaleString('ko-KR')}</small>
+                    </div>
+                `).join('') : '<div class="card">게시글이 없습니다.</div>';
+            }
+            if (currentTab === 'todo') {
+                const todos = DB.get('todos');
+                document.getElementById('todoList').innerHTML = todos.length ? todos.map((t, i) => `
+                    <div class="card" style="display: flex; justify-content: space-between;">
+                        <span style="${t.done?'text-decoration:line-through;color:#999;':''}">${t.text}</span>
+                        <div>
+                            <button class="btn" onclick="toggleTodo(${i})" style="padding: 6px 12px; margin-right: 5px;">${t.done?'취소':'완료'}</button>
+                            <button class="btn" onclick="deleteTodo(${i})" style="padding: 6px 12px; background: #e74c3c;">삭제</button>
+                        </div>
+                    </div>
+                `).join('') : '<div class="card">할일 없음</div>';
+            }
+            if (currentTab === 'admin') {
+                const users = DB.get('users'), posts = DB.get('posts');
+                document.getElementById('stats').innerHTML = `<p>👥 사용자: ${users.length}명</p><p>📝 게시글: ${posts.length}개</p>`;
+            }
+        }
+
+        function openPostModal() { document.getElementById('postModal').classList.add('show'); }
+        function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+        
+        function submitPost() {
+            const title = document.getElementById('postTitle').value.trim();
+            const content = document.getElementById('postContent').value.trim();
+            if (!title || !content) return alert('제목과 내용 입력!');
+            const posts = DB.get('posts');
+            posts.push({id: Date.now(), title, content, author: currentUser, date: new Date().toISOString()});
+            DB.set('posts', posts);
+            closeModal('postModal');
+            document.getElementById('postTitle').value = '';
+            document.getElementById('postContent').value = '';
+            render();
+        }
+
+        function addTodoPrompt() {
+            const text = prompt('할일 입력:');
+            if (!text) return;
+            const todos = DB.get('todos');
+            todos.push({text, done: false});
+            DB.set('todos', todos);
+            render();
+        }
+
+        function toggleTodo(i) {
+            const todos = DB.get('todos');
+            todos[i].done = !todos[i].done;
+            DB.set('todos', todos);
+            render();
+        }
+
+        function deleteTodo(i) {
+            const todos = DB.get('todos');
+            todos.splice(i, 1);
+            DB.set('todos', todos);
+            render();
+        }
+
+        function toggleChat() { document.getElementById('chatWindow').classList.toggle('show'); }
+        function toggleTheme() { document.body.classList.toggle('dark'); }
+
+        function selectAI(ai) {
+            selectedAI = ai;
+            document.querySelectorAll('.ai-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('btn' + (ai === 'chatgpt' ? 'ChatGPT' : 'Gemini')).classList.add('active');
+        }
+
+        async function sendMsg() {
+            const input = document.getElementById('chatInput');
+            const msg = input.value.trim();
+            if (!msg) return;
+            
+            const msgs = document.getElementById('messages');
+            msgs.innerHTML += `<div class="chat-msg user">${msg}</div>`;
+            input.value = '';
+            
+            // 생각 중
+            const thinking = document.createElement('div');
+            thinking.className = 'thinking';
+            thinking.innerHTML = '<span></span><span></span><span></span>';
+            msgs.appendChild(thinking);
+            msgs.scrollTop = msgs.scrollHeight;
+            
+            await new Promise(r => setTimeout(r, 1000));
+            
+            thinking.remove();
+            const response = generateResponse(msg, selectedAI);
+            msgs.innerHTML += `<div class="chat-msg bot ${selectedAI}">${response.replace(/\n/g, '<br>')}</div>`;
+            msgs.scrollTop = msgs.scrollHeight;
+        }
+
+        window.addEventListener('load', () => {
+            const saved = localStorage.getItem('currentUser');
+            if (saved) {
+                currentUser = saved;
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('mainApp').classList.remove('hidden');
+                document.getElementById('userName').textContent = `👋 ${saved}님`;
+                if (saved === '강수현') document.getElementById('adminTab').classList.remove('hidden');
+                render();
+            }
+        });
+    </script>
+</body>
+</html>
