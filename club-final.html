@@ -10,6 +10,68 @@
         body.dark { --bg: #1a1a1a; --card: #2d2d2d; --text: #e8e8e8; }
         body { font-family: -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
         .hidden { display: none !important; }
+        
+        /* 환영 효과 */
+        .welcome-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.5s;
+        }
+        
+        .welcome-box {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 50px;
+            border-radius: 30px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            animation: scaleIn 0.5s;
+        }
+        
+        .welcome-box h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            animation: bounce 1s infinite;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes scaleIn {
+            from { transform: scale(0.5); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        /* 폭죽 효과 */
+        .firework {
+            position: fixed;
+            width: 5px;
+            height: 5px;
+            background: #FFD700;
+            border-radius: 50%;
+            animation: explode 1s ease-out;
+            pointer-events: none;
+        }
+        
+        @keyframes explode {
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+        }
         .login-container { min-height: 100vh; display: flex; justify-content: center; align-items: center; background: linear-gradient(135deg, #667eea, #764ba2); }
         .login-box { background: white; padding: 50px; border-radius: 20px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
         .login-box input { width: 100%; padding: 15px; margin: 15px 0; border: 2px solid #ddd; border-radius: 10px; }
@@ -20,27 +82,6 @@
         .tab.active { background: var(--accent); color: white; }
         .content { max-width: 1200px; margin: 0 auto; padding: 0 20px 20px; }
         .card { background: var(--card); padding: 20px; margin-bottom: 15px; border-radius: 12px; }
-        .chatbot-toggle { position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; font-size: 1.5em; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 999; }
-        .chatbot-window { display: none; position: fixed; bottom: 90px; right: 20px; width: 450px; height: 650px; background: var(--bg); border-radius: 15px; flex-direction: column; box-shadow: 0 10px 40px rgba(0,0,0,0.3); z-index: 998; }
-        .chatbot-window.show { display: flex; }
-        .chat-header { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 20px; border-radius: 15px 15px 0 0; }
-        .ai-selector { display: flex; gap: 10px; margin-top: 10px; }
-        .ai-btn { flex: 1; padding: 8px; border: 2px solid white; background: transparent; color: white; border-radius: 6px; cursor: pointer; font-size: 0.85em; font-weight: 600; }
-        .ai-btn.active { background: white; color: #667eea; }
-        .chat-messages { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
-        .chat-msg { padding: 12px 16px; border-radius: 16px; max-width: 85%; word-wrap: break-word; animation: fadeIn 0.3s; line-height: 1.6; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .chat-msg.user { background: var(--accent); color: white; align-self: flex-end; }
-        .chat-msg.bot { background: var(--card); align-self: flex-start; }
-        .chat-msg.bot.chatgpt { border-left: 4px solid #10a37f; }
-        .chat-msg.bot.gemini { border-left: 4px solid #4285f4; }
-        .thinking { display: flex; gap: 5px; padding: 12px; align-self: flex-start; }
-        .thinking span { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; animation: bounce 1.4s infinite; }
-        .thinking span:nth-child(2) { animation-delay: 0.2s; }
-        .thinking span:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes bounce { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-10px); } }
-        .chat-input { display: flex; padding: 15px; gap: 10px; border-top: 1px solid #ddd; }
-        .chat-input input { flex: 1; padding: 12px; border: 2px solid #ddd; border-radius: 24px; }
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; justify-content: center; align-items: center; }
         .modal.show { display: flex; }
         .modal-content { background: var(--bg); padding: 30px; border-radius: 15px; max-width: 600px; width: 90%; max-height: 90vh; overflow-y: auto; }
@@ -54,7 +95,6 @@
     <div id="loginScreen" class="login-container">
         <div class="login-box">
             <h1 style="color: #667eea;">🎲 보드게임 동아리</h1>
-            <p style="margin: 20px 0; color: #666;">ChatGPT + Gemini 듀얼 AI</p>
             <input type="text" id="loginName" placeholder="이름 입력" />
             <button class="btn" onclick="login()" style="width: 100%; padding: 15px;">시작하기</button>
         </div>
@@ -67,6 +107,8 @@
                 <small id="userName"></small>
             </div>
             <div style="display: flex; gap: 10px;">
+                <button class="btn" onclick="exportEvolution()" style="padding: 8px 16px;" title="진화 데이터 저장">💾</button>
+                <button class="btn" onclick="importEvolution()" style="padding: 8px 16px;" title="진화 데이터 불러오기">📂</button>
                 <button class="btn" onclick="toggleTheme()" style="padding: 8px 16px;">🌓</button>
                 <button class="btn" onclick="logout()" style="padding: 8px 16px;">로그아웃</button>
             </div>
@@ -81,29 +123,497 @@
 
         <div class="content">
             <div id="homeSection">
-                <div class="card" style="background: linear-gradient(135deg, #10a37f15, #4285f415); border: 2px solid var(--accent);">
-                    <h2>🤖 듀얼 AI 시스템</h2>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0;">
-                        <div style="background: var(--bg); padding: 15px; border-radius: 10px; border: 2px solid #10a37f;">
-                            <h3 style="color: #10a37f;">ChatGPT 스타일</h3>
-                            <p style="font-size: 0.9em; margin-top: 10px;">친절하고 대화형<br>길고 상세한 설명<br>단계별 안내</p>
-                        </div>
-                        <div style="background: var(--bg); padding: 15px; border-radius: 10px; border: 2px solid #4285f4;">
-                            <h3 style="color: #4285f4;">Gemini 스타일</h3>
-                            <p style="font-size: 0.9em; margin-top: 10px;">구조화된 분석<br>멀티모달 지원<br>체계적 답변</p>
+                <h1 style="text-align: center; margin-bottom: 30px; color: var(--accent);">🎲 재미있는 보드게임 10선 🎲</h1>
+                
+                <!-- 우노 -->
+                <div class="card" style="margin-bottom: 30px; border-left: 5px solid #FF6B35;">
+                    <div style="display: flex; gap: 20px; align-items: flex-start;">
+                        <div style="font-size: 80px; line-height: 1;">🎴</div>
+                        <div style="flex: 1;">
+                            <h2 style="color: #FF6B35; margin-bottom: 10px;">1. 우노 (UNO)</h2>
+                            <div style="background: var(--card); padding: 15px; border-radius: 10px; margin: 15px 0;">
+                                <h3 style="margin-bottom: 10px;">🎯 게임 특징</h3>
+                                <ul style="margin-left: 20px; line-height: 1.8;">
+                                    <li><strong>인원:</strong> 2-10명</li>
+                                    <li><strong>시간:</strong> 15-30분</li>
+                                    <li><strong>난이도:</strong> ⭐⭐ (쉬움)</li>
+                                    <li><strong>연령:</strong> 7세 이상</li>
+                                    <li>간단한 규칙으로 누구나 쉽게 즐길 수 있는 카드 게임</li>
+                                    <li>운빨과 전략의 절묘한 조합</li>
+                                    <li>가족, 친구들과 함께 즐기기 완벽한 파티 게임</li>
+                                </ul>
+                            </div>
+                            <div style="background: var(--card); padding: 15px; border-radius: 10px; margin: 15px 0;">
+                                <h3 style="margin-bottom: 10px;">📖 플레이 방법</h3>
+                                <ol style="margin-left: 20px; line-height: 1.8;">
+                                    <li>각 플레이어에게 7장의 카드를 나눠줍니다.</li>
+                                    <li>중앙에 카드 한 장을 엎어 놓습니다.</li>
+                                    <li>시계방향으로 돌아가며 같은 색상 또는 같은 숫자/기호의 카드를 낼 수 있습니다.</li>
+                                    <li>낼 카드가 없으면 한 장을 뽑아야 합니다.</li>
+                                    <li>카드가 1장 남으면 "우노!"를 외쳐야 합니다. 잊으면 벌칙으로 2장을 뽑습니다.</li>
+                                    <li>카드를 모두 내면 승리합니다!</li>
+                                    <li><strong>특수 카드:</strong>
+                                        <ul style="margin-left: 20px; margin-top: 5px;">
+                                            <li>⏭️ 스킵: 다음 사람 차례 건너뛰기</li>
+                                            <li>🔄 리버스: 진행 방향 바꾸기</li>
+                                            <li>➕ 드로우 2: 다음 사람이 2장 뽑기</li>
+                                            <li>🎨 와일드: 원하는 색 선택</li>
+                                            <li>🎨➕ 와일드 드로우 4: 원하는 색 선택 + 다음 사람 4장 뽑기</li>
+                                        </ul>
+                                    </li>
+                                </ol>
+                            </div>
+                            <div style="background: linear-gradient(135deg, #FF6B3515, #F7931E15); padding: 15px; border-radius: 10px; margin: 15px 0; border-left: 4px solid #FF6B35;">
+                                <h3 style="margin-bottom: 10px;">💡 승리 팁</h3>
+                                <ul style="margin-left: 20px; line-height: 1.8;">
+                                    <li><strong>특수 카드 보관:</strong> 드로우 4, 와일드 같은 강력한 카드는 나중에 사용하세요.</li>
+                                    <li><strong>색상 통일 전략:</strong> 한 색상 카드에 집중하면 다음 차례에 유리합니다.</li>
+                                    <li><strong>상대 관찰:</strong> 상대가 가진 카드 수를 기억하고 약한 순서에 공격 카드를 쓰세요.</li>
+                                    <li><strong>우노 선언 타이밍:</strong> 카드가 2장일 때도 위협적으로 플레이해 상대를 압박하세요.</li>
+                                    <li><strong>스킵/리버스 활용:</strong> 자신의 차례를 빠르게 돌리고 상대를 막으세요.</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                    <div style="background: var(--bg); padding: 15px; border-radius: 8px;">
-                        <h3 style="color: var(--accent);">📚 초대량 데이터베이스</h3>
-                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; font-size: 0.9em;">
-                            <div>🎲 보드게임 40+</div>
-                            <div>🚗 자동차 10+</div>
-                            <div>🌌 과학 10+</div>
-                            <div>💻 프로그래밍 10+</div>
-                            <div>🎵 K-POP 9+</div>
-                            <div>⚽ 스포츠 9+</div>
+                </div>
+
+                <!-- 뱅 -->
+                <div class="card" style="margin-bottom: 30px; border-left: 5px solid #8B4513;">
+                    <div style="display: flex; gap: 20px; align-items: flex-start;">
+                        <div style="font-size: 80px; line-height: 1;">🤠</div>
+                        <div style="flex: 1;">
+                            <h2 style="color: #8B4513; margin-bottom: 10px;">2. 뱅! (Bang!)</h2>
+                            <div style="background: var(--card); padding: 15px; border-radius: 10px; margin: 15px 0;">
+                                <h3 style="margin-bottom: 10px;">🎯 게임 특징</h3>
+                                <ul style="margin-left: 20px; line-height: 1.8;">
+                                    <li><strong>인원:</strong> 4-7명 (최적 5-6명)</li>
+                                    <li><strong>시간:</strong> 20-40분</li>
+                                    <li><strong>난이도:</strong> ⭐⭐⭐ (보통)</li>
+                                    <li><strong>연령:</strong> 10세 이상</li>
+                                    <li>서부시대를 배경으로 한 정체 숨김 게임</li>
+                                    <li>역할 추론과 전략적 사고가 중요한 게임</li>
+                                    <li>블러핑과 협상의 재미가 뛰어남</li>
+                                    <li>한국에서도 매우 인기 있는 파티게임</li>
+                                </ul>
+                            </div>
+                            <div style="background: var(--card); padding: 15px; border-radius: 10px; margin: 15px 0;">
+                                <h3 style="margin-bottom: 10px;">📖 플레이 방법</h3>
+                                <ol style="margin-left: 20px; line-height: 1.8;">
+                                    <li><strong>역할 배분:</strong> 비밀리에 역할 카드를 받습니다.
+                                        <ul style="margin-left: 20px; margin-top: 5px;">
+                                            <li>👮 보안관: 범죄자와 배신자를 모두 제거해야 승리</li>
+                                            <li>⚔️ 부관: 보안관을 보호하며 범죄자 제거</li>
+                                            <li>🔫 범죄자: 보안관을 제거하면 승리</li>
+                                            <li>🕵️ 배신자: 마지막까지 살아남아 1:1 상황 만들어야 승리</li>
+                                        </ul>
+                                    </li>
+                                    <li><strong>캐릭터 선택:</strong> 각자 고유 능력을 가진 캐릭터를 선택합니다.</li>
+                                    <li><strong>게임 진행:</strong>
+                                        <ul style="margin-left: 20px; margin-top: 5px;">
+                                            <li>카드를 뽑기 (2장)</li>
+                                            <li>카드 사용 및 공격</li>
+                                            <li>카드 버리기 (손패 한도 맞추기)</li>
+                                        </ul>
+                                    </li>
+                                    <li><strong>거리 계산:</strong> 다른 플레이어와의 거리를 계산해 공격할 수 있는 범위를 결정합니다.</li>
+                                    <li><strong>승리 조건:</strong> 각 역할의 승리 조건을 달성하면 게임 종료!</li>
+                                </ol>
+                            </div>
+                            <div style="background: linear-gradient(135deg, #8B451315, #D2691E15); padding: 15px; border-radius: 10px; margin: 15px 0; border-left: 4px solid #8B4513;">
+                                <h3 style="margin-bottom: 10px;">💡 승리 팁</h3>
+                                <ul style="margin-left: 20px; line-height: 1.8;">
+                                    <li><strong>역할 파악:</strong> 상대의 행동 패턴으로 역할을 추론하세요.</li>
+                                    <li><strong>보안관:</strong> 초반에는 신중하게, 부관을 찾아 협력하세요.</li>
+                                    <li><strong>범죄자:</strong> 처음에는 숨어 있다가 기회를 노리세요. 함께 협력하세요!</li>
+                                    <li><strong>부관:</strong> 보안관을 보호하는 것이 최우선입니다.</li>
+                                    <li><strong>배신자:</strong> 적절한 타이밍에 배신하고, 마지막에 1:1 상황을 만들어야 합니다.</li>
+                                    <li><strong>캐릭터 활용:</strong> 자신의 캐릭터 능력을 최대한 활용하세요.</li>
+                                    <li><strong>거리 관리:</strong> 말을 활용해 거리를 조절하세요.</li>
+                                </ul>
+                            </div>
                         </div>
-                        <p style="margin-top: 15px; font-weight: 600; color: var(--accent);">총 100+ 주제 탑재!</p>
+                    </div>
+                </div>
+
+                <!-- PIT -->
+                <div class="card" style="margin-bottom: 30px; border-left: 5px solid #FFD700;">
+                    <div style="display: flex; gap: 20px; align-items: flex-start;">
+                        <div style="font-size: 80px; line-height: 1;">🌽</div>
+                        <div style="flex: 1;">
+                            <h2 style="color: #FFD700; margin-bottom: 10px;">3. PIT (피트)</h2>
+                            <div style="background: var(--card); padding: 15px; border-radius: 10px; margin: 15px 0;">
+                                <h3 style="margin-bottom: 10px;">🎯 게임 특징</h3>
+                                <ul style="margin-left: 20px; line-height: 1.8;">
+                                    <li><strong>인원:</strong> 3-8명 (최적 5-7명)</li>
+                                    <li><strong>시간:</strong> 15-30분</li>
+                                    <li><strong>난이도:</strong> ⭐ (매우 쉬움)</li>
+                                    <li><strong>연령:</strong> 7세 이상</li>
+                                    <li>시카고 곡물 거래소를 배경으로 한 실시간 교역 게임</li>
+                                    <li>동시에 모든 플레이어가 동시에 교역하는 혼란스러운 게임</li>
+                                    <li>소음과 웃음이 가득한 파티 게임</li>
+                                    <li>반응 속도와 협상 능력이 중요</li>
+                                </ul>
+                            </div>
+                            <div style="background: var(--card); padding: 15px; border-radius: 10px; margin: 15px 0;">
+                                <h3 style="margin-bottom: 10px;">📖 플레이 방법</h3>
+                                <ol style="margin-left: 20px; line-height: 1.8;">
+                                    <li><strong>카드 분배:</strong> 인원수에 따라 곡물 카드를 나눠줍니다. (예: 5명이면 5가지 곡물, 각 9장)</li>
+                                    <li><strong>목표:</strong> 같은 곡물 카드를 9장 모으면 승리!</li>
+                                    <li><strong>교역 시작:</strong> 모두가 동시에 "피트!"를 외치며 교역을 시작합니다.</li>
+                                    <li><strong>교역 방법:</strong>
+                                        <ul style="margin-left: 20px; margin-top: 5px;">
+                                            <li>같은 종류의 카드를 여러 장 들고 숫자를 외칩니다 (예: "3개! 3개!")</li>
+                                            <li>원하는 사람과 만나면 동시에 "교역!"을 외치며 카드를 교환합니다</li>
+                                            <li>같은 숫자의 카드끼리만 교환 가능합니다</li>
+                                        </ul>
+                                    </li>
+                                    <li><strong>특수 카드:</strong>
+                                        <ul style="margin-left: 20px; margin-top: 5px;">
+                                            <li>🐻 베어: 곡물 가격 폭락 (해당 곡물 보유 시 손해)</li>
+                                            <li>🐂 불: 곡물 가격 폭등 (해당 곡물 보유 시 이익)</li>
+                                        </ul>
+                                    </li>
+                                    <li>같은 곡물 9장을 먼저 모은 사람이 승리!</li>
+                                </ol>
+                            </div>
+                            <div style="background: linear-gradient(135deg, #FFD70015, #FFA50015); padding: 15px; border-radius: 10px; margin: 15px 0; border-left: 4px solid #FFD700;">
+                                <h3 style="margin-bottom: 10px;">💡 승리 팁</h3>
+                                <ul style="margin-left: 20px; line-height: 1.8;">
+                                    <li><strong>빠른 반응:</strong> 가장 중요한 것은 빠르게 외치고 교역하는 것입니다!</li>
+                                    <li><strong>전략적 집중:</strong> 초반에 한 곡물에 집중하세요.</li>
+                                    <li><strong>다양한 숫자:</strong> 다양한 숫자의 카드를 보관해 교역 기회를 늘리세요.</li>
+                                    <li><strong>상대 관찰:</strong> 누가 어떤 곡물을 원하는지 빠르게 파악하세요.</li>
+                                    <li><strong>베어/불 활용:</strong> 특수 카드를 적절한 타이밍에 사용하세요.</li>
+                                    <li><strong>목소리 활용:</strong> 큰 목소리로 외쳐 상대의 주의를 끄세요.</li>
+                                    <li><strong>거래 거절:</strong> 불리한 거래는 과감히 거절하고 다시 찾으세요.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 카탄 -->
+                <div class="card" style="margin-bottom: 30px; border-left: 5px solid #4CAF50;">
+                    <div style="display: flex; gap: 20px; align-items: flex-start;">
+                        <div style="font-size: 80px; line-height: 1;">🏝️</div>
+                        <div style="flex: 1;">
+                            <h2 style="color: #4CAF50; margin-bottom: 10px;">4. 카탄 (Settlers of Catan)</h2>
+                            <div style="background: var(--card); padding: 15px; border-radius: 10px; margin: 15px 0;">
+                                <h3 style="margin-bottom: 10px;">🎯 게임 특징</h3>
+                                <ul style="margin-left: 20px; line-height: 1.8;">
+                                    <li><strong>인원:</strong> 3-4명 (확장: 최대 6명)</li>
+                                    <li><strong>시간:</strong> 60-90분</li>
+                                    <li><strong>난이도:</strong> ⭐⭐⭐ (보통)</li>
+                                    <li><strong>연령:</strong> 10세 이상</li>
+                                    <li>전략적 자원 관리와 교역이 핵심인 게임</li>
+                                    <li>매 게임마다 다른 지도로 즐길 수 있어 재플레이 가치가 높음</li>
+                                    <li>보드게임의 입문작으로 최적</li>
+                                </ul>
+                            </div>
+                            <div style="background: var(--card); padding: 15px; border-radius: 10px; margin: 15px 0;">
+                                <h3 style="margin-bottom: 10px;">📖 플레이 방법</h3>
+                                <ol style="margin-left: 20px; line-height: 1.8;">
+                                    <li><strong>목표:</strong> 10점을 먼저 모으면 승리!</li>
+                                    <li><strong>자원:</strong> 목재, 벽돌, 양, 밀, 광석 5가지</li>
+                                    <li><strong>주사위:</strong> 매 턴 주사위 2개를 굴려 해당 숫자의 타일에 자원을 얻습니다.</li>
+                                    <li><strong>건설:</strong> 도로, 마을, 도시를 건설해 점수를 획득합니다.</li>
+                                    <li><strong>교역:</strong> 다른 플레이어나 은행과 자원을 교역할 수 있습니다.</li>
+                                    <li><strong>도둑:</strong> 7이 나오면 도둑을 사용해 다른 플레이어를 방해합니다.</li>
+                                </ol>
+                            </div>
+                            <div style="background: linear-gradient(135deg, #4CAF5015, #8BC34A15); padding: 15px; border-radius: 10px; margin: 15px 0; border-left: 4px solid #4CAF50;">
+                                <h3 style="margin-bottom: 10px;">💡 승리 팁</h3>
+                                <ul style="margin-left: 20px; line-height: 1.8;">
+                                    <li><strong>초반 위치:</strong> 숫자가 자주 나오는 자원(6, 8) 근처에 마을을 짓세요.</li>
+                                    <li><strong>다양한 자원:</strong> 다양한 자원을 확보해 건설 기회를 늘리세요.</li>
+                                    <li><strong>도로 확장:</strong> 최장 도로 카드를 노려 도로를 먼저 확장하세요.</li>
+                                    <li><strong>교역 협상:</strong> 상대와 유리한 교역을 성사시키세요.</li>
+                                    <li><strong>도둑 활용:</strong> 도둑으로 상대의 자원을 빼앗으세요.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 할리갈리 -->
+                <div class="card" style="margin-bottom: 30px; border-left: 5px solid #FF4081;">
+                    <div style="display: flex; gap: 20px; align-items: flex-start;">
+                        <div style="font-size: 80px; line-height: 1;">🔔</div>
+                        <div style="flex: 1;">
+                            <h2 style="color: #FF4081; margin-bottom: 10px;">5. 할리갈리 (Halli Galli)</h2>
+                            <div style="background: var(--card); padding: 15px; border-radius: 10px; margin: 15px 0;">
+                                <h3 style="margin-bottom: 10px;">🎯 게임 특징</h3>
+                                <ul style="margin-left: 20px; line-height: 1.8;">
+                                    <li><strong>인원:</strong> 2-6명</li>
+                                    <li><strong>시간:</strong> 10-15분</li>
+                                    <li><strong>난이도:</strong> ⭐ (매우 쉬움)</li>
+                                    <li><strong>연령:</strong> 6세 이상</li>
+                                    <li>빠른 반응 속도가 필요한 실시간 게임</li>
+                                    <li>간단한 규칙으로 누구나 쉽게 즐길 수 있음</li>
+                                    <li>가족 모임에 최적의 게임</li>
+                                </ul>
+                            </div>
+                            <div style="background: var(--card); padding: 15px; border-radius: 10px; margin: 15px 0;">
+                                <h3 style="margin-bottom: 10px;">📖 플레이 방법</h3>
+                                <ol style="margin-left: 20px; line-height: 1.8;">
+                                    <li>각자 카드 더미를 받습니다.</li>
+                                    <li>한 번에 한 장씩 카드를 뒤집어 놓습니다.</li>
+                                    <li>같은 종류의 과일이 정확히 5개가 보이면 가장 빠르게 종을 칩니다!</li>
+                                    <li>가장 빠르게 친 사람이 모든 공개된 카드를 가져갑니다.</li>
+                                    <li>카드를 모두 잃으면 탈락, 마지막까지 남은 사람이 승리!</li>
+                                </ol>
+                            </div>
+                            <div style="background: linear-gradient(135deg, #FF408115, #E91E6315); padding: 15px; border-radius: 10px; margin: 15px 0; border-left: 4px solid #FF4081;">
+                                <h3 style="margin-bottom: 10px;">💡 승리 팁</h3>
+                                <ul style="margin-left: 20px; line-height: 1.8;">
+                                    <li><strong>집중력:</strong> 항상 모든 카드를 주시하세요.</li>
+                                    <li><strong>빠른 반응:</strong> 5개가 되면 주저하지 말고 바로 치세요!</li>
+                                    <li><strong>손 준비:</strong> 항상 종 위에 손을 올려두세요.</li>
+                                    <li><strong>오판 주의:</strong> 정확히 5개일 때만 쳐야 합니다!</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 코드네임 -->
+                <div class="card" style="margin-bottom: 30px; border-left: 5px solid #9C27B0;">
+                    <div style="display: flex; gap: 20px; align-items: flex-start;">
+                        <div style="font-size: 80px; line-height: 1;">🕵️</div>
+                        <div style="flex: 1;">
+                            <h2 style="color: #9C27B0; margin-bottom: 10px;">6. 코드네임 (Codenames)</h2>
+                            <div style="background: var(--card); padding: 15px; border-radius: 10px; margin: 15px 0;">
+                                <h3 style="margin-bottom: 10px;">🎯 게임 특징</h3>
+                                <ul style="margin-left: 20px; line-height: 1.8;">
+                                    <li><strong>인원:</strong> 4-8명 (2팀)</li>
+                                    <li><strong>시간:</strong> 15-30분</li>
+                                    <li><strong>난이도:</strong> ⭐⭐⭐ (보통)</li>
+                                    <li><strong>연령:</strong> 10세 이상</li>
+                                    <li>팀워크와 언어 능력이 중요한 게임</li>
+                                    <li>상상력과 추론 능력을 발휘할 수 있음</li>
+                                    <li>파티게임으로 인기 최고</li>
+                                </ul>
+                            </div>
+                            <div style="background: var(--card); padding: 15px; border-radius: 10px; margin: 15px 0;">
+                                <h3 style="margin-bottom: 10px;">📖 플레이 방법</h3>
+                                <ol style="margin-left: 20px; line-height: 1.8;">
+                                    <li>25개의 단어 카드를 5x5로 배열합니다.</li>
+                                    <li>각 팀은 스파이마스터 1명과 요원들로 나뉩니다.</li>
+                                    <li>스파이마스터는 자신의 단어들을 암호로 암시합니다 (예: "동물 3" = 동물 관련 단어 3개)</li>
+                                    <li>요원들은 단어를 추측해 선택합니다.</li>
+                                    <li>자신의 단어를 모두 찾은 팀이 승리!</li>
+                                    <li>⚠️ 상대 팀 단어나 암살자 카드를 선택하면 즉시 패배!</li>
+                                </ol>
+                            </div>
+                            <div style="background: linear-gradient(135deg, #9C27B015, #673AB715); padding: 15px; border-radius: 10px; margin: 15px 0; border-left: 4px solid #9C27B0;">
+                                <h3 style="margin-bottom: 10px;">💡 승리 팁</h3>
+                                <ul style="margin-left: 20px; line-height: 1.8;">
+                                    <li><strong>스파이마스터:</strong> 여러 단어를 연결하는 창의적인 힌트를 내세요.</li>
+                                    <li><strong>요원:</strong> 스파이마스터의 의도를 파악하고 논리적으로 추론하세요.</li>
+                                    <li><strong>위험 회피:</strong> 확신이 없으면 선택하지 마세요!</li>
+                                    <li><strong>협력:</strong> 팀원들과 의견을 나누세요.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 스플렌더 -->
+                <div class="card" style="margin-bottom: 30px; border-left: 5px solid #00BCD4;">
+                    <div style="display: flex; gap: 20px; align-items: flex-start;">
+                        <div style="font-size: 80px; line-height: 1;">💎</div>
+                        <div style="flex: 1;">
+                            <h2 style="color: #00BCD4; margin-bottom: 10px;">7. 스플렌더 (Splendor)</h2>
+                            <div style="background: var(--card); padding: 15px; border-radius: 10px; margin: 15px 0;">
+                                <h3 style="margin-bottom: 10px;">🎯 게임 특징</h3>
+                                <ul style="margin-left: 20px; line-height: 1.8;">
+                                    <li><strong>인원:</strong> 2-4명</li>
+                                    <li><strong>시간:</strong> 30분</li>
+                                    <li><strong>난이도:</strong> ⭐⭐ (쉬움)</li>
+                                    <li><strong>연령:</strong> 10세 이상</li>
+                                    <li>보석 수집과 카드 구매가 핵심인 엔진빌딩 게임</li>
+                                    <li>간단한 규칙이지만 전략적 사고가 필요</li>
+                                    <li>아름다운 구성 요소로 유명</li>
+                                </ul>
+                            </div>
+                            <div style="background: var(--card); padding: 15px; border-radius: 10px; margin: 15px 0;">
+                                <h3 style="margin-bottom: 10px;">📖 플레이 방법</h3>
+                                <ol style="margin-left: 20px; line-height: 1.8;">
+                                    <li><strong>목표:</strong> 15점을 먼저 모으면 승리!</li>
+                                    <li><strong>턴:</strong> 보석 토큰 3개 가져가기 / 보석 토큰 2개(같은 색) 가져가기 / 개발 카드 구매 중 선택</li>
+                                    <li><strong>개발 카드:</strong> 보석을 사용해 구매하면 영구적으로 할인을 받습니다.</li>
+                                    <li><strong>귀족 카드:</strong> 특정 조합의 개발 카드를 모으면 추가 점수를 받습니다.</li>
+                                </ol>
+                            </div>
+                            <div style="background: linear-gradient(135deg, #00BCD415, #0097A715); padding: 15px; border-radius: 10px; margin: 15px 0; border-left: 4px solid #00BCD4;">
+                                <h3 style="margin-bottom: 10px;">💡 승리 팁</h3>
+                                <ul style="margin-left: 20px; line-height: 1.8;">
+                                    <li><strong>엔진 구축:</strong> 초반에는 할인 카드를 많이 모으세요.</li>
+                                    <li><strong>귀족 노리기:</strong> 귀족 카드 조건을 일찍 파악하고 집중하세요.</li>
+                                    <li><strong>토큰 관리:</strong> 10개 제한을 고려해 효율적으로 토큰을 관리하세요.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 스플렌더 -->
+                <div class="card" style="margin-bottom: 30px; border-left: 5px solid #00BCD4;">
+                    <div style="display: flex; gap: 20px; align-items: flex-start;">
+                        <div style="font-size: 80px; line-height: 1;">💎</div>
+                        <div style="flex: 1;">
+                            <h2 style="color: #00BCD4; margin-bottom: 10px;">7. 스플렌더 (Splendor)</h2>
+                            <div style="background: var(--card); padding: 15px; border-radius: 10px; margin: 15px 0;">
+                                <h3 style="margin-bottom: 10px;">🎯 게임 특징</h3>
+                                <ul style="margin-left: 20px; line-height: 1.8;">
+                                    <li><strong>인원:</strong> 2-4명</li>
+                                    <li><strong>시간:</strong> 30분</li>
+                                    <li><strong>난이도:</strong> ⭐⭐ (쉬움)</li>
+                                    <li><strong>연령:</strong> 10세 이상</li>
+                                    <li>보석 수집과 카드 구매가 핵심인 엔진빌딩 게임</li>
+                                    <li>간단한 규칙이지만 전략적 사고가 필요</li>
+                                    <li>아름다운 구성 요소로 유명</li>
+                                </ul>
+                            </div>
+                            <div style="background: var(--card); padding: 15px; border-radius: 10px; margin: 15px 0;">
+                                <h3 style="margin-bottom: 10px;">📖 플레이 방법</h3>
+                                <ol style="margin-left: 20px; line-height: 1.8;">
+                                    <li><strong>목표:</strong> 15점을 먼저 모으면 승리!</li>
+                                    <li><strong>턴:</strong> 보석 토큰 3개 가져가기 / 보석 토큰 2개(같은 색) 가져가기 / 개발 카드 구매 중 선택</li>
+                                    <li><strong>개발 카드:</strong> 보석을 사용해 구매하면 영구적으로 할인을 받습니다.</li>
+                                    <li><strong>귀족 카드:</strong> 특정 조합의 개발 카드를 모으면 추가 점수를 받습니다.</li>
+                                </ol>
+                            </div>
+                            <div style="background: linear-gradient(135deg, #00BCD415, #0097A715); padding: 15px; border-radius: 10px; margin: 15px 0; border-left: 4px solid #00BCD4;">
+                                <h3 style="margin-bottom: 10px;">💡 승리 팁</h3>
+                                <ul style="margin-left: 20px; line-height: 1.8;">
+                                    <li><strong>엔진 구축:</strong> 초반에는 할인 카드를 많이 모으세요.</li>
+                                    <li><strong>귀족 노리기:</strong> 귀족 카드 조건을 일찍 파악하고 집중하세요.</li>
+                                    <li><strong>토큰 관리:</strong> 10개 제한을 고려해 효율적으로 토큰을 관리하세요.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 다빈치코드 -->
+                <div class="card" style="margin-bottom: 30px; border-left: 5px solid #607D8B;">
+                    <div style="display: flex; gap: 20px; align-items: flex-start;">
+                        <div style="font-size: 80px; line-height: 1;">🔢</div>
+                        <div style="flex: 1;">
+                            <h2 style="color: #607D8B; margin-bottom: 10px;">8. 다빈치코드 (Da Vinci Code)</h2>
+                            <div style="background: var(--card); padding: 15px; border-radius: 10px; margin: 15px 0;">
+                                <h3 style="margin-bottom: 10px;">🎯 게임 특징</h3>
+                                <ul style="margin-left: 20px; line-height: 1.8;">
+                                    <li><strong>인원:</strong> 2-4명</li>
+                                    <li><strong>시간:</strong> 20-30분</li>
+                                    <li><strong>난이도:</strong> ⭐⭐ (쉬움)</li>
+                                    <li><strong>연령:</strong> 8세 이상</li>
+                                    <li>숫자 추론과 논리적 사고가 필요한 게임</li>
+                                    <li>상대의 숫자 패턴을 추론해 맞히는 게임</li>
+                                    <li>간단하지만 전략적인 요소가 있는 게임</li>
+                                </ul>
+                            </div>
+                            <div style="background: var(--card); padding: 15px; border-radius: 10px; margin: 15px 0;">
+                                <h3 style="margin-bottom: 10px;">📖 플레이 방법</h3>
+                                <ol style="margin-left: 20px; line-height: 1.8;">
+                                    <li>각자 숫자 카드를 받아 앞을 가리고 나열합니다.</li>
+                                    <li>상대의 카드 중 하나를 추측해 맞히면 됩니다.</li>
+                                    <li>상대가 제시한 숫자가 자신의 카드보다 크면 검은 토큰, 작으면 흰 토큰을 받습니다.</li>
+                                    <li>토큰 정보를 바탕으로 상대의 숫자 배열을 추론합니다.</li>
+                                    <li>상대의 모든 카드를 맞히면 승리!</li>
+                                </ol>
+                            </div>
+                            <div style="background: linear-gradient(135deg, #607D8B15, #455A6415); padding: 15px; border-radius: 10px; margin: 15px 0; border-left: 4px solid #607D8B;">
+                                <h3 style="margin-bottom: 10px;">💡 승리 팁</h3>
+                                <ul style="margin-left: 20px; line-height: 1.8;">
+                                    <li><strong>논리적 추론:</strong> 토큰 정보를 체계적으로 정리하세요.</li>
+                                    <li><strong>전략적 질문:</strong> 정보를 최대한 많이 얻을 수 있는 카드를 선택하세요.</li>
+                                    <li><strong>패턴 파악:</strong> 상대의 질문 패턴으로 카드 배치를 추론하세요.</li>
+                                    <li><strong>블러핑:</strong> 가끔 의도적으로 잘못된 정보를 주어 상대를 혼란시키세요.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 모노폴리 -->
+                <div class="card" style="margin-bottom: 30px; border-left: 5px solid #795548;">
+                    <div style="display: flex; gap: 20px; align-items: flex-start;">
+                        <div style="font-size: 80px; line-height: 1;">💰</div>
+                        <div style="flex: 1;">
+                            <h2 style="color: #795548; margin-bottom: 10px;">9. 모노폴리 (Monopoly)</h2>
+                            <div style="background: var(--card); padding: 15px; border-radius: 10px; margin: 15px 0;">
+                                <h3 style="margin-bottom: 10px;">🎯 게임 특징</h3>
+                                <ul style="margin-left: 20px; line-height: 1.8;">
+                                    <li><strong>인원:</strong> 2-8명</li>
+                                    <li><strong>시간:</strong> 1-3시간</li>
+                                    <li><strong>난이도:</strong> ⭐⭐ (쉬움)</li>
+                                    <li><strong>연령:</strong> 8세 이상</li>
+                                    <li>전 세계적으로 유명한 부동산 거래 게임</li>
+                                    <li>상업 전략과 협상이 중요한 게임</li>
+                                    <li>클래식 보드게임의 대표작</li>
+                                </ul>
+                            </div>
+                            <div style="background: var(--card); padding: 15px; border-radius: 10px; margin: 15px 0;">
+                                <h3 style="margin-bottom: 10px;">📖 플레이 방법</h3>
+                                <ol style="margin-left: 20px; line-height: 1.8;">
+                                    <li>주사위를 굴려 보드 위를 이동합니다.</li>
+                                    <li>땅을 사고 건물을 건설합니다.</li>
+                                    <li>다른 플레이어가 내 땅에 도착하면 임대료를 받습니다.</li>
+                                    <li>상대방을 파산시킨 마지막 사람이 승리!</li>
+                                </ol>
+                            </div>
+                            <div style="background: linear-gradient(135deg, #79554815, #5D403715); padding: 15px; border-radius: 10px; margin: 15px 0; border-left: 4px solid #795548;">
+                                <h3 style="margin-bottom: 10px;">💡 승리 팁</h3>
+                                <ul style="margin-left: 20px; line-height: 1.8;">
+                                    <li><strong>초반 투자:</strong> 초반에 땅을 많이 사세요.</li>
+                                    <li><strong>색깔 세트:</strong> 같은 색깔 땅을 모아 건물을 짓으세요.</li>
+                                    <li><strong>현금 관리:</strong> 항상 여유 자금을 확보하세요.</li>
+                                    <li><strong>협상:</strong> 상대와 거래해 색깔 세트를 완성하세요.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 레지스탕스 -->
+                <div class="card" style="margin-bottom: 30px; border-left: 5px solid #F44336;">
+                    <div style="display: flex; gap: 20px; align-items: flex-start;">
+                        <div style="font-size: 80px; line-height: 1;">🕵️</div>
+                        <div style="flex: 1;">
+                            <h2 style="color: #F44336; margin-bottom: 10px;">10. 레지스탕스 (The Resistance)</h2>
+                            <div style="background: var(--card); padding: 15px; border-radius: 10px; margin: 15px 0;">
+                                <h3 style="margin-bottom: 10px;">🎯 게임 특징</h3>
+                                <ul style="margin-left: 20px; line-height: 1.8;">
+                                    <li><strong>인원:</strong> 5-10명</li>
+                                    <li><strong>시간:</strong> 30분</li>
+                                    <li><strong>난이도:</strong> ⭐⭐⭐ (보통)</li>
+                                    <li><strong>연령:</strong> 13세 이상</li>
+                                    <li>정체 숨김과 추론이 핵심인 게임</li>
+                                    <li>협력과 배신의 스릴이 있는 게임</li>
+                                    <li>파티게임으로 인기 높음</li>
+                                </ul>
+                            </div>
+                            <div style="background: var(--card); padding: 15px; border-radius: 10px; margin: 15px 0;">
+                                <h3 style="margin-bottom: 10px;">📖 플레이 방법</h3>
+                                <ol style="margin-left: 20px; line-height: 1.8;">
+                                    <li>비밀리에 저항군 또는 스파이 역할을 받습니다.</li>
+                                    <li>임무 팀을 구성하고 임무를 수행합니다.</li>
+                                    <li>저항군은 임무를 성공시켜야 하고, 스파이는 실패시켜야 합니다.</li>
+                                    <li>임무 3번 성공 시 저항군 승리, 3번 실패 시 스파이 승리!</li>
+                                </ol>
+                            </div>
+                            <div style="background: linear-gradient(135deg, #F4433615, #D32F2F15); padding: 15px; border-radius: 10px; margin: 15px 0; border-left: 4px solid #F44336;">
+                                <h3 style="margin-bottom: 10px;">💡 승리 팁</h3>
+                                <ul style="margin-left: 20px; line-height: 1.8;">
+                                    <li><strong>저항군:</strong> 팀 구성에 신중하세요. 스파이를 걸러내세요.</li>
+                                    <li><strong>스파이:</strong> 자신의 정체를 숨기고 팀에 포함되세요.</li>
+                                    <li><strong>논리적 추론:</strong> 모든 플레이어의 행동을 분석하세요.</li>
+                                    <li><strong>블러핑:</strong> 적절한 블러핑이 승부를 좌우합니다.</li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -130,31 +640,6 @@
             </div>
         </div>
 
-        <button class="chatbot-toggle" onclick="toggleChat()">💬</button>
-        <div class="chatbot-window" id="chatWindow">
-            <div class="chat-header">
-                <div style="font-size: 1.1em; font-weight: bold;">🤖 듀얼 AI 챗봇</div>
-                <div style="font-size: 0.8em; opacity: 0.9; margin-top: 5px;">ChatGPT + Gemini</div>
-                <div class="ai-selector">
-                    <button class="ai-btn active" id="btnChatGPT" onclick="selectAI('chatgpt')">ChatGPT</button>
-                    <button class="ai-btn" id="btnGemini" onclick="selectAI('gemini')">Gemini</button>
-                </div>
-            </div>
-            <div class="chat-messages" id="messages">
-                <div class="chat-msg bot chatgpt">
-                    안녕하세요! 😊<br><br>
-                    저는 <strong>ChatGPT</strong>와 <strong>Gemini</strong> 두 AI를 모두 사용할 수 있는 듀얼 AI 챗봇입니다!<br><br>
-                    위에서 원하는 AI를 선택하세요:<br>
-                    • ChatGPT: 친절하고 대화형<br>
-                    • Gemini: 구조화되고 분석적<br><br>
-                    🎲 보드게임 40종 + 일반 지식 100+ 탑재!
-                </div>
-            </div>
-            <div class="chat-input">
-                <input type="text" id="chatInput" placeholder="메시지 입력..." onkeypress="if(event.key==='Enter')sendMsg()">
-                <button class="btn" onclick="sendMsg()">전송</button>
-            </div>
-        </div>
     </div>
 
     <div id="postModal" class="modal">
@@ -173,114 +658,303 @@
             set: (k, v) => localStorage.setItem(k, JSON.stringify(v))
         };
 
+        // 게시판 데이터 초기화
+        DB.set('posts', []);
+
         let currentUser = null;
         let currentTab = 'home';
-        let selectedAI = 'chatgpt';
 
-        // 초대량 지식베이스
+        // 초대량 지식베이스 (100+ 주제)
         const KNOWLEDGE = {
+            // 보드게임 (20개)
             "할리갈리":"🔔 할리갈리는 빠른 반응속도가 필요한 재미있는 보드게임입니다. 2-6명이 즐길 수 있으며, 게임 시간은 약 15분입니다. 각자 카드를 한 장씩 뒤집으며, 같은 종류의 과일이 정확히 5개가 나오면 재빨리 종을 쳐야 합니다. 가장 빠르게 친 사람이 모든 카드를 가져가며, 가장 많은 카드를 모은 사람이 승리합니다!",
             "뱅":"🤠 뱅은 서부시대를 배경으로 한 정체 숨김 게임입니다. 4-7명이 즐기며 약 30분 소요됩니다. 플레이어들은 보안관, 무법자, 부관, 배신자 중 하나의 역할을 비밀리에 부여받습니다. 각자의 목표는 다르며, 카드를 사용해 다른 플레이어를 공격하거나 방어합니다. 마지막까지 살아남은 진영이 승리합니다!",
             "카탄":"🏝️ 카탄은 전 세계적으로 사랑받는 자원 수집 및 건설 게임입니다. 3-4명이 약 90분 동안 플레이합니다. 주사위를 굴려 자원(목재, 벽돌, 양, 밀, 광석)을 획득하고, 이를 사용해 도로와 마을을 건설합니다. 가장 먼저 10점을 달성하는 플레이어가 승리합니다. 교역과 전략이 중요한 게임입니다!",
+            "코드네임":"🕵️ 코드네임은 단어 추론 게임입니다. 4-8명이 즐기며 약 15분 소요됩니다. 두 팀으로 나뉘어 각 팀의 스파이마스터가 팀원들에게 단서를 주고, 단어 카드를 찾아야 합니다. 상대팀의 단어를 선택하면 게임에서 패배합니다.",
+            "체스":"♟️ 체스는 2명이 즐기는 전략 보드게임입니다. 64칸의 체스판에서 킹, 퀸, 룩, 비숍, 나이트, 폰 등의 말을 이동시켜 상대의 킹을 체크메이트시키면 승리합니다. 전 세계적으로 사랑받는 고전 게임입니다.",
+            "바둑":"⚫ 바둑은 한국, 중국, 일본에서 사랑받는 전략 보드게임입니다. 2명이 즐기며 흑과 백 돌을 번갈아 두어 더 넓은 지역을 지배하는 사람이 승리합니다. 19x19 격자판을 사용하며, 매우 깊은 전략이 필요한 게임입니다.",
+            "레지스탕스":"🕵️ 레지스탕스는 5-10명이 즐기는 사회 추론 게임입니다. 저항군과 스파이로 나뉘어 임무를 수행하거나 방해합니다. 약 30분 소요되며, 논리적 추론과 설득 능력이 중요한 게임입니다.",
+            "캐치마인드":"🎨 캐치마인드는 그림 그리기 게임입니다. 4-8명이 즐기며 제시어를 보고 그림을 그려 상대방이 맞히는 게임입니다. 창의력과 상상력이 필요한 재미있는 게임입니다.",
+            "스플렌더":"💎 스플렌더는 2-4명이 즐기는 카드 드래프팅 게임입니다. 보석 토큰을 모아 개발 카드를 구매하고, 명예점수를 획득하여 15점을 먼저 달성하는 사람이 승리합니다. 약 30분 소요됩니다.",
+            "카르카손":"🏰 카르카손은 2-5명이 즐기는 타일 배치 게임입니다. 타일을 배치하여 도로, 성, 수도원, 목초지를 완성하고 기사를 배치하여 점수를 획득합니다. 약 45분 소요되며, 전략적 사고가 필요합니다.",
+            "윙스팬":"🦅 윙스팬은 조류 테마의 엔진빌딩 게임입니다. 1-5명이 즐기며 조류 카드를 플레이하여 점수를 획득합니다. 아름다운 일러스트와 깊은 전략으로 유명합니다.",
+            "마법의 숲":"🧙 마법의 숲은 협력 게임입니다. 1-4명이 함께 플레이하여 악령을 물리치고 마법의 숲을 구해야 합니다. 협력과 전략이 중요한 게임입니다.",
+            "콜트 익스프레스":"🚂 콜트 익스프레스는 서부시대 열차 강도 게임입니다. 2-6명이 즐기며 열차에서 보물을 훔치고 도망가는 재미있는 게임입니다. 약 30분 소요됩니다.",
+            "스케치":"✏️ 스케치는 그림 그리기 게임입니다. 제시어를 보고 그림을 그려 상대방이 맞히는 게임으로, 창의력과 표현력이 필요합니다.",
+            "디스코드":"🎵 디스코드는 음악 맞히기 게임입니다. 노래를 듣고 제목이나 가수를 맞히는 게임으로, 음악 지식이 풍부할수록 유리합니다.",
+            "다빈치코드":"🔢 다빈치코드는 숫자 추론 게임입니다. 상대방의 카드 숫자를 추론하여 맞히는 게임으로, 논리적 사고가 필요합니다.",
+            "스크래블":"📝 스크래블은 단어 만들기 게임입니다. 알파벳 타일을 사용하여 단어를 만들고 점수를 획득하는 게임입니다.",
+            "모노폴리":"💰 모노폴리는 부동산 거래 게임입니다. 2-8명이 즐기며 땅을 사고 팔아 부자가 되는 것을 목표로 합니다. 약 1-3시간 소요됩니다.",
+            "아웃브레이크":"🦠 아웃브레이크는 협력 게임입니다. 2-4명이 함께 전염병을 막고 치료법을 개발해야 합니다. 긴장감 넘치는 협력 게임입니다.",
+            "데드 오브 윈터":"❄️ 데드 오브 윈터는 좀비 서바이벌 협력 게임입니다. 2-5명이 함께 생존하면서 임무를 수행해야 하며, 배신자가 있을 수 있어 긴장감이 높습니다.",
+            
+            // 자동차 (15개)
             "세계에서 가장 빠른 차":"🏎️ 세계에서 가장 빠른 양산 자동차는 부가티 시론 슈퍼 스포츠 300+입니다. 이 차는 2019년에 시속 490.48km/h(304.77mph)의 놀라운 속도를 기록했습니다. 8.0리터 W16 쿼드 터보 엔진을 탑재하여 1,600마력을 발휘합니다. 가격은 약 40억원 이상으로, 전 세계 30대만 생산되었습니다.",
+            "빠른 차":"🏎️ 세계에서 가장 빠른 양산 자동차는 부가티 시론 슈퍼 스포츠 300+입니다. 이 차는 2019년에 시속 490.48km/h(304.77mph)의 놀라운 속도를 기록했습니다.",
+            "자동차":"🚗 자동차에 대해 알려드리겠습니다. 세계에서 가장 빠른 양산 자동차는 부가티 시론 슈퍼 스포츠 300+로 시속 490.48km/h를 기록했습니다. 테슬라는 전기차 분야에서 선도하고 있으며, 람보르기니, 페라리 등은 슈퍼카로 유명합니다.",
+            "테슬라":"🔋 테슬라는 미국의 전기자동차 제조사입니다. CEO는 일론 머스크이며, 모델 S, 모델 3, 모델 X, 모델 Y 등을 생산합니다. 자율주행 기술과 전기차 기술로 유명합니다.",
+            "람보르기니":"🐂 람보르기니는 이탈리아의 슈퍼카 제조사입니다. 아벤타도르, 우라칸, 후라칸 등 고성능 스포츠카로 유명합니다. 1963년 페루치오 람보르기니가 설립했습니다.",
+            "페라리":"🐴 페라리는 이탈리아의 레이싱카 및 스포츠카 제조사입니다. 포뮬러 원 경주에서 16번 우승했으며, 488, F8 트리뷰토, SF90 스트라달레 등으로 유명합니다.",
+            "부가티":"🏎️ 부가티는 프랑스의 고급 스포츠카 제조사입니다. 시론, 베이론, 디보 등 초고성능 자동차로 유명하며, 세계에서 가장 빠른 양산차를 만든 회사입니다.",
+            "포르셰":"🚗 포르셰는 독일의 스포츠카 제조사입니다. 911, 카이엔, 마칸 등으로 유명하며, 뛰어난 주행 성능과 디자인으로 사랑받고 있습니다.",
+            "현대":"🚙 현대자동차는 한국의 자동차 제조사입니다. 소나타, 아반떼, 그랜저, 팰리세이드 등 다양한 모델을 생산하며, 전기차 아이오닉으로도 유명합니다.",
+            "기아":"🚗 기아자동차는 한국의 자동차 제조사입니다. K5, K7, 쏘렌토, 셀토스 등으로 유명하며, 전기차 EV6로 주목받고 있습니다.",
+            "벤츠":"⭐ 메르세데스-벤츠는 독일의 고급 자동차 브랜드입니다. S클래스, E클래스, C클래스 등으로 유명하며, 고급스러운 디자인과 기술력으로 유명합니다.",
+            "BMW":"🔵 BMW는 독일의 고급 자동차 제조사입니다. 3시리즈, 5시리즈, 7시리즈 등으로 유명하며, 뛰어난 주행 성능과 드라이빙 플레저로 사랑받고 있습니다.",
+            "아우디":"⚪ 아우디는 독일의 고급 자동차 제조사입니다. A3, A4, A6, Q5, Q7 등으로 유명하며, 쿼트로 사륜구동 시스템으로 유명합니다.",
+            "전기차":"🔋 전기차는 전기 모터로 움직이는 자동차입니다. 배터리를 사용하여 구동하며, 배기가스가 없어 친환경적입니다. 테슬라, 현대, 기아 등이 전기차를 생산하고 있습니다.",
+            "자율주행":"🤖 자율주행은 자동차가 스스로 운전하는 기술입니다. 센서와 AI를 사용하여 차량을 제어하며, 테슬라, 구글, 현대 등이 개발 중입니다.",
+            
+            // AI/기술 (20개)
             "ai":"🤖 인공지능(AI, Artificial Intelligence)은 컴퓨터가 인간처럼 학습하고, 추론하고, 문제를 해결할 수 있도록 하는 기술입니다. 머신러닝, 딥러닝, 자연어 처리, 컴퓨터 비전 등이 포함됩니다. 최근에는 ChatGPT, Gemini 같은 대화형 AI가 큰 인기를 끌고 있으며, 이미지 생성, 코드 작성, 번역 등 다양한 분야에서 활용되고 있습니다.",
+            "인공지능":"🤖 인공지능(AI)은 컴퓨터가 인간처럼 학습하고, 추론하고, 문제를 해결할 수 있도록 하는 기술입니다. 머신러닝, 딥러닝, 자연어 처리, 컴퓨터 비전 등이 포함됩니다.",
             "gpt-3":"🧠 GPT-3(Generative Pre-trained Transformer 3)는 OpenAI가 2020년 개발한 대규모 언어 모델입니다. 175억 개의 파라미터를 가지고 있으며, Few-shot 학습이 가능합니다. 96개의 Transformer 층, 12,288의 은닉 크기, 96개의 어텐션 헤드를 가진 Decoder-only 아키텍처입니다. 자연어 이해, 생성, 번역, 요약 등 다양한 태스크를 수행할 수 있습니다.",
+            "gpt":"🧠 GPT는 OpenAI가 개발한 대규모 언어 모델입니다. GPT-3는 175억 개의 파라미터를 가지고 있으며, 자연어 이해, 생성, 번역 등 다양한 태스크를 수행할 수 있습니다.",
+            "gpt-4":"🧠 GPT-4는 OpenAI가 2023년 개발한 차세대 대규모 언어 모델입니다. GPT-3보다 훨씬 향상된 성능을 보이며, 멀티모달(텍스트+이미지) 처리도 가능합니다. 더 정확하고 창의적인 답변을 제공합니다.",
+            "chatgpt":"💬 ChatGPT는 OpenAI가 개발한 대화형 AI 챗봇입니다. GPT 모델을 기반으로 하며, 자연스러운 대화, 코드 작성, 글쓰기, 번역 등 다양한 작업을 수행할 수 있습니다.",
             "gemini":"🌟 Gemini는 구글이 개발한 멀티모달 AI 모델입니다. 텍스트, 이미지, 오디오를 동시에 처리할 수 있는 통합 토큰 공간을 사용합니다. Gemini Ultra, Pro, Nano 세 가지 버전이 있으며, Transformer 백본을 사용합니다. ChatGPT의 강력한 경쟁자로 평가받고 있습니다.",
+            "머신러닝":"📊 머신러닝은 인공지능의 한 분야로, 컴퓨터가 데이터로부터 학습하여 패턴을 찾고 예측하는 기술입니다. 지도학습, 비지도학습, 강화학습 등이 있습니다.",
+            "딥러닝":"🧬 딥러닝은 인공신경망을 깊게 쌓아 만든 머신러닝 기법입니다. 이미지 인식, 자연어 처리, 음성 인식 등에서 뛰어난 성능을 보이며, GPU 가속으로 발전했습니다.",
+            "파이썬":"🐍 Python은 귀도 반 로섬이 1991년 개발한 고급 프로그래밍 언어입니다. 간결하고 읽기 쉬운 문법이 특징이며, 인공지능, 데이터 과학, 웹 개발, 자동화 등 다양한 분야에서 사용됩니다. TensorFlow, PyTorch 같은 강력한 라이브러리가 있어 AI 개발에 최적화되어 있습니다.",
+            "python":"🐍 Python은 1991년 개발된 고급 프로그래밍 언어로, 간결하고 읽기 쉬운 문법이 특징입니다. AI, 데이터 과학, 웹 개발 등 다양한 분야에서 사용됩니다.",
+            "자바스크립트":"💻 JavaScript는 웹 브라우저에서 동작하는 프로그래밍 언어입니다. 웹페이지의 동적 기능을 구현하는 데 사용되며, Node.js로 서버 개발도 가능합니다.",
+            "자바":"☕ Java는 썬 마이크로시스템즈가 개발한 객체지향 프로그래밍 언어입니다. 플랫폼 독립적이며, 안드로이드 앱 개발과 엔터프라이즈 소프트웨어에 널리 사용됩니다.",
+            "C++":"⚙️ C++는 벨 연구소에서 개발한 객체지향 프로그래밍 언어입니다. 시스템 프로그래밍, 게임 개발, 고성능 애플리케이션에 널리 사용됩니다.",
+            "HTML":"🌐 HTML은 웹페이지의 구조를 정의하는 마크업 언어입니다. 웹의 기본 구성 요소이며, CSS와 JavaScript와 함께 사용됩니다.",
+            "CSS":"🎨 CSS는 웹페이지의 스타일을 정의하는 언어입니다. 색상, 레이아웃, 애니메이션 등을 제어하여 아름다운 웹페이지를 만들 수 있습니다.",
+            "리액트":"⚛️ React는 페이스북이 개발한 JavaScript 라이브러리입니다. 사용자 인터페이스를 구축하기 위한 컴포넌트 기반 프레임워크로, 현재 가장 인기 있는 프론트엔드 기술입니다.",
+            "안드로이드":"📱 안드로이드는 구글이 개발한 모바일 운영체제입니다. 전 세계 스마트폰의 대부분을 차지하며, Java와 Kotlin으로 앱을 개발할 수 있습니다.",
+            "iOS":"🍎 iOS는 애플이 개발한 모바일 운영체제입니다. iPhone과 iPad에서 사용되며, Swift와 Objective-C로 앱을 개발할 수 있습니다.",
+            "블록체인":"⛓️ 블록체인은 분산 원장 기술로, 암호화폐의 기반 기술입니다. 비트코인, 이더리움 등이 블록체인을 사용하며, 투명성과 보안성이 특징입니다.",
+            
+            // K-POP/음악 (10개)
             "bts":"🎵 방탄소년단(BTS)은 대한민국의 7인조 보이그룹으로, 전 세계적으로 엄청난 인기를 끌고 있습니다. 멤버는 RM, 진, 슈가, 제이홉, 지민, 뷔, 정국입니다. 2013년 데뷔하여 'Dynamite', 'Butter' 등으로 빌보드 1위를 기록했으며, 그래미 어워드에도 여러 번 노미네이트되었습니다.",
-            "파이썬":"🐍 Python은 귀도 반 로섬이 1991년 개발한 고급 프로그래밍 언어입니다. 간결하고 읽기 쉬운 문법이 특징이며, 인공지능, 데이터 과학, 웹 개발, 자동화 등 다양한 분야에서 사용됩니다. TensorFlow, PyTorch 같은 강력한 라이브러리가 있어 AI 개발에 최적화되어 있습니다."
+            "방탄소년단":"🎵 방탄소년단(BTS)은 대한민국의 7인조 보이그룹으로, 전 세계적으로 엄청난 인기를 끌고 있습니다. 멤버는 RM, 진, 슈가, 제이홉, 지민, 뷔, 정국입니다.",
+            "블랙핑크":"🖤 블랙핑크는 YG엔터테인먼트 소속의 4인조 걸그룹입니다. 멤버는 제니, 리사, 로제, 지수입니다. 'How You Like That', 'DDU-DU DDU-DU' 등으로 전 세계적인 인기를 얻었습니다.",
+            "뉴진스":"🎀 뉴진스는 하이브 소속의 5인조 걸그룹입니다. 'Attention', 'Hype Boy', 'Ditto' 등으로 큰 인기를 얻었으며, Y2K 컨셉으로 주목받았습니다.",
+            "세븐틴":"💎 세븐틴은 플레디스 엔터테인먼트 소속의 13인조 보이그룹입니다. 자체 프로듀싱 능력으로 유명하며, 'Very Nice', 'Left & Right' 등으로 인기를 얻었습니다.",
+            "아이유":"🌸 아이유는 대한민국의 솔로 가수이자 배우입니다. '좋은 날', '에잇', '라일락' 등 다양한 히트곡을 보유하고 있으며, 감성적인 보이스로 사랑받고 있습니다.",
+            "태연":"✨ 태연은 소녀시대의 리더이자 솔로 가수입니다. 'I', 'Fine', 'Weekend' 등으로 솔로 활동도 성공했으며, 뛰어난 가창력으로 유명합니다.",
+            "임영웅":"🎤 임영웅은 트로트 가수입니다. '신사랑', '사랑은 늘 도망가' 등으로 큰 인기를 얻었으며, 젊은 세대에게 트로트를 알린 가수입니다.",
+            "르세라핌":"🔥 르세라핌은 하이브 소속의 6인조 걸그룹입니다. 'FEARLESS', 'ANTIFRAGILE', 'UNFORGIVEN' 등으로 활동하며, 강렬한 퍼포먼스로 주목받고 있습니다.",
+            "스테이씨":"⭐ 스테이씨는 하이브 소속의 6인조 걸그룹입니다. 'ASAP', 'STEREOTYPE', 'RUN2U' 등으로 활동하며, 독특한 음악 스타일로 인기를 얻고 있습니다.",
+            
+            // 스포츠 (10개)
+            "축구":"⚽ 축구는 11명씩 두 팀이 상대 골대에 공을 넣어 점수를 얻는 스포츠입니다. 세계에서 가장 인기 있는 스포츠이며, FIFA 월드컵이 가장 큰 대회입니다. 메시, 호날두, 손흥민 등이 유명한 선수입니다.",
+            "손흥민":"⚽ 손흥민은 대한민국의 축구선수입니다. 토트넘 홋스퍼에서 뛰고 있으며, 2021-22시즌 프리미어리그 득점왕을 차지했습니다. 한국 국가대표팀의 주장이기도 합니다.",
+            "메시":"⚽ 리오넬 메시는 아르헨티나의 축구선수입니다. 2022 카타르 월드컵 우승을 이끌었으며, 발롱도르를 7번 수상했습니다. 세계 최고의 선수 중 한 명으로 평가받습니다.",
+            "호날두":"⚽ 크리스티아누 호날두는 포르투갈의 축구선수입니다. 레알 마드리드, 맨체스터 유나이티드 등에서 뛰었으며, 발롱도르를 5번 수상했습니다.",
+            "농구":"🏀 농구는 5명씩 두 팀이 상대팀 골대에 공을 넣어 점수를 얻는 스포츠입니다. NBA가 가장 유명한 리그이며, 마이클 조던, 르브론 제임스 등이 전설적인 선수입니다.",
+            "야구":"⚾ 야구는 타자가 투수가 던진 공을 치고 베이스를 돌아 홈에 들어와 점수를 얻는 스포츠입니다. MLB가 가장 유명한 리그이며, KBO는 한국 프로야구 리그입니다.",
+            "배구":"🏐 배구는 6명씩 두 팀이 네트를 사이에 두고 공을 상대편 코트로 보내 점수를 얻는 스포츠입니다. 올림픽 정식 종목이며, 김연경 선수가 세계적으로 유명합니다.",
+            "테니스":"🎾 테니스는 라켓을 사용하여 공을 치는 스포츠입니다. 윔블던, 프랑스 오픈, US 오픈, 호주 오픈 등 그랜드슬램 대회가 유명합니다.",
+            "수영":"🏊 수영은 물속에서 손과 발을 사용하여 이동하는 스포츠입니다. 자유형, 배영, 평영, 접영 등 다양한 영법이 있으며, 올림픽 정식 종목입니다.",
+            "올림픽":"🏅 올림픽은 4년마다 개최되는 세계 최대 규모의 스포츠 대회입니다. 하계 올림픽과 동계 올림픽이 있으며, 평화와 우정을 상징합니다.",
+            
+            // 과학/우주 (10개)
+            "지구":"🌍 지구는 태양계의 세 번째 행성입니다. 생명체가 존재하는 유일한 행성으로 알려져 있으며, 물과 대기층이 있어 생명체가 살 수 있습니다. 약 71%가 바다로 덮여 있습니다.",
+            "달":"🌙 달은 지구의 위성입니다. 약 38만 킬로미터 떨어져 있으며, 29.5일을 주기로 지구를 공전합니다. 1969년 아폴로 11호가 최초로 착륙했습니다.",
+            "태양":"☀️ 태양은 태양계의 중심 별입니다. 지구에서 약 1억 5천만 킬로미터 떨어져 있으며, 지구의 모든 에너지의 근원입니다. 표면 온도는 약 5,500도입니다.",
+            "우주":"🌌 우주는 지구 대기를 벗어난 무한한 공간입니다. 은하, 별, 행성, 소행성 등이 존재하며, 현재까지 관측 가능한 우주의 크기는 약 930억 광년입니다.",
+            "블랙홀":"🕳️ 블랙홀은 중력이 매우 강하여 빛조차 탈출할 수 없는 천체입니다. 별이 죽을 때 형성되며, 은하 중심에 초대질량 블랙홀이 존재합니다.",
+            "화성":"🔴 화성은 태양계의 네 번째 행성입니다. 붉은 색으로 유명하며, 물의 흔적이 발견되어 생명체 존재 가능성이 연구되고 있습니다. 화성 탐사 로버가 여러 차례 탐사했습니다.",
+            "금성":"🟡 금성은 태양계의 두 번째 행성입니다. 가장 뜨거운 행성으로 표면 온도가 약 460도이며, 이산화탄소로 이루어진 두꺼운 대기층이 있습니다.",
+            "목성":"🪐 목성은 태양계의 다섯 번째 행성입니다. 가장 큰 행성으로 가스 행성이며, 대적점이라는 거대한 폭풍이 있습니다. 79개의 위성을 가지고 있습니다.",
+            "원자":"⚛️ 원자는 물질을 이루는 기본 단위입니다. 양성자, 중성자, 전자로 구성되어 있으며, 원소마다 원자 번호가 다릅니다.",
+            "DNA":"🧬 DNA는 생명체의 유전 정보를 저장하는 분자입니다. 이중 나선 구조를 가지고 있으며, 모든 생명체의 설계도라고 할 수 있습니다.",
+            
+            // 일반 지식 (10개)
+            "서울":"🏙️ 서울은 대한민국의 수도입니다. 인구 약 1,000만 명이 거주하며, 강남, 홍대, 명동 등 유명한 지역이 있습니다. 한강이 도시를 가로지릅니다.",
+            "부산":"🌊 부산은 대한민국 제2의 도시입니다. 해운대, 광안리 해수욕장으로 유명하며, 부산항은 세계적인 무역항입니다.",
+            "제주도":"🏝️ 제주도는 대한민국 최남단의 섬입니다. 한라산, 성산일출봉, 만장굴 등이 유명하며, 아름다운 자연 풍경으로 관광지로 사랑받고 있습니다.",
+            "한국":"🇰🇷 대한민국은 동아시아에 위치한 국가입니다. 인구 약 5,100만 명이며, 삼성, 현대, LG 등 세계적인 기업을 보유하고 있습니다. K-POP, K-드라마로 문화 강국으로 떠오르고 있습니다.",
+            "미국":"🇺🇸 미국은 북미에 위치한 국가입니다. 세계 최대의 경제력을 가진 나라이며, 실리콘밸리는 세계 IT 산업의 중심지입니다.",
+            "일본":"🇯🇵 일본은 동아시아의 섬나라입니다. 도쿄, 오사카, 교토 등이 유명하며, 전자 제품, 애니메이션, 게임 산업이 발달했습니다.",
+            "중국":"🇨🇳 중국은 세계에서 인구가 가장 많은 국가입니다. 베이징, 상하이 등 대도시가 있으며, 급속한 경제 발전을 이루었습니다.",
+            "인터넷":"🌐 인터넷은 전 세계 컴퓨터를 연결하는 네트워크입니다. 1960년대 미국에서 시작되었으며, 현재 우리 생활에 없어서는 안 될 중요한 기술이 되었습니다.",
+            "컴퓨터":"💻 컴퓨터는 정보를 처리하는 전자 기기입니다. CPU, 메모리, 저장장치 등으로 구성되며, 프로그래밍을 통해 다양한 작업을 수행할 수 있습니다.",
+            "스마트폰":"📱 스마트폰은 휴대용 컴퓨터입니다. 전화, 인터넷, 게임, 카메라 등 다양한 기능을 제공하며, 안드로이드와 iOS가 주요 운영체제입니다."
         };
 
         const LEARNED = JSON.parse(localStorage.getItem('aiLearned') || '{}');
-
-        // AI 응답 생성
-        function generateResponse(msg, ai) {
-            const m = msg.toLowerCase();
-            let info = null;
-            
-            // 학습된 내용
-            for (let k in LEARNED) {
-                if (m.includes(k)) {
-                    info = `🧠 ${LEARNED[k]} (학습한 내용입니다!)`;
-                    break;
-                }
-            }
-            
-            // 지식베이스
-            if (!info) {
-                for (let k in KNOWLEDGE) {
-                    if (m.includes(k)) {
-                        info = KNOWLEDGE[k];
-                        break;
-                    }
-                }
-            }
-            
-            // 보드게임 추천
-            if (!info && m.includes('보드게임') && m.includes('추천')) {
-                const n = msg.match(/(\d+)명/);
-                if (n) {
-                    const num = parseInt(n[1]);
-                    const games = {
-                        2: "2명 추천: 체스 ♟️ 또는 바둑 ⚫",
-                        3: "3명 추천: 카탄 🏝️",
-                        4: "4명 추천: 뱅 🤠 또는 코드네임 🕵️",
-                        5: "5명 추천: 코드네임 🕵️ 또는 레지스탕스 🕵️",
-                        6: "6명 이상 추천: 코드네임 🕵️ 또는 캐치마인드 🎨"
-                    };
-                    info = games[num] || games[6];
-                }
-                else info = "🎲 보드게임을 추천해드리겠습니다! 몇 명이서 플레이하실 건가요?";
-            }
-            
-            // 시간/날짜
-            if (!info && m.includes('시간')) info = `현재 시간은 ${new Date().toLocaleTimeString('ko-KR')}입니다.`;
-            if (!info && m.includes('날짜')) info = `오늘은 ${new Date().toLocaleDateString('ko-KR')}입니다.`;
-            
-            // 계산
-            if (!info && /\d+\s*[\+\-\*\/]\s*\d+/.test(m)) {
-                const c = m.match(/(\d+)\s*([\+\-\*\/])\s*(\d+)/);
-                if (c) {
-                    const a = parseFloat(c[1]), op = c[2], b = parseFloat(c[3]);
-                    let r = 0;
-                    if (op === '+') r = a + b;
-                    else if (op === '-') r = a - b;
-                    else if (op === '*') r = a * b;
-                    else if (op === '/') r = b !== 0 ? a / b : '무한대';
-                    info = `계산 결과는 ${r}입니다.`;
-                }
-            }
-            
-            // 기본 정보
-            if (!info) {
-                if (m.includes('안녕')) info = "안녕하세요! 저는 ChatGPT와 Gemini 스타일을 지원하는 듀얼 AI입니다.";
-                else info = "해당 주제에 대한 정보를 더 구체적으로 질문해주시면 상세히 답변드리겠습니다.";
-            }
-            
-            // AI 스타일 적용
-            if (ai === 'chatgpt') {
-                return `안녕하세요! 질문해주셔서 감사합니다. 😊\\n\\n${info}\\n\\n더 자세히 설명드리자면, 이것은 매우 흥미로운 주제입니다. 많은 분들이 궁금해하시는 내용인데요, 제가 가진 지식을 최대한 활용하여 상세하게 답변드렸습니다.\\n\\n추가로 궁금한 점이 있으시면 언제든 말씀해주세요! 제가 최선을 다해 도와드리겠습니다. 💡\\n\\n다른 관련 질문이나 더 깊이 있는 정보를 원하시면 편하게 물어보세요!`;
-            } else {
-                return `🌟 **질문 분석 완료**\\n\\n**핵심 답변:**\\n${info}\\n\\n**상세 분석:**\\n\\n1️⃣ **개요**\\n이 주제는 많은 사람들의 관심을 받고 있는 중요한 분야입니다.\\n\\n2️⃣ **주요 특징**\\n• 핵심 요소가 잘 갖춰져 있습니다\\n• 실용성과 가치가 높습니다\\n• 지속적으로 발전하고 있습니다\\n\\n3️⃣ **결론**\\n더 궁금하신 부분이 있다면 구체적으로 질문해주세요.\\n\\n💡 추가 질문을 환영합니다!`;
+        
+        let autoGeneratedKnowledge = parseInt(localStorage.getItem('autoKnowledgeCount') || '0');
+        
+        // 진화 시스템
+        let aiEvolution = JSON.parse(localStorage.getItem('aiEvolution') || JSON.stringify({
+            level: 1,
+            exp: 0,
+            conversations: 0,
+            learnedPatterns: {},
+            intelligence: 100,
+            totalSamples: 0  // 학습한 총 샘플 수
+        }));
+        
+        // (기존 복잡한 머신러닝/딥러닝 함수들은 제거되었습니다 - 간단한 챗봇으로 대체됨)
+        
+        function updateEvolutionUI() {
+            const statusEl = document.getElementById('aiStatus');
+            if (statusEl) {
+                // 안전한 초기화
+                if (!aiEvolution.totalSamples) aiEvolution.totalSamples = 0;
+                if (!aiEvolution.conversations) aiEvolution.conversations = 0;
+                
+                // 샘플 수 = 지식 수! (10000 샘플 = 10000 지식)
+                // 기본 지식베이스 (고정)
+                const baseKnowledge = Object.keys(KNOWLEDGE).length;
+                const learnedKnowledge = Object.keys(LEARNED).length;
+                const patternKnowledge = Object.keys(aiEvolution.learnedPatterns || {}).length;
+                
+                // 자동 생성된 지식 (1초에 10000개씩 증가!)
+                const autoKnowledge = Math.floor(autoGeneratedKnowledge);
+                
+                // 샘플에서 나온 지식 (1 샘플 = 1 지식, 10000 샘플 = 10000 지식)
+                const sampleKnowledge = Math.floor(aiEvolution.totalSamples);
+                
+                // 총 지식 = 기본 지식 + 학습 지식 + 패턴 지식 + 샘플 지식 + 자동 생성 지식
+                const totalKnowledge = baseKnowledge + learnedKnowledge + patternKnowledge + sampleKnowledge + autoKnowledge;
+                
+                // UI 업데이트 (샘플이 증가하면 지식도 자동으로 증가!)
+                statusEl.textContent = `Lv.${aiEvolution.level} | ${aiEvolution.totalSamples.toLocaleString()}샘플 | ${totalKnowledge.toLocaleString()}개 지식 | 지능 ${aiEvolution.intelligence.toLocaleString()} | 대화 ${aiEvolution.conversations}회`;
             }
         }
+        
+        // 진화 데이터 저장/불러오기 (깃허브 공유용!)
+        function exportEvolution() {
+            const data = JSON.stringify(aiEvolution, null, 2);
+            const blob = new Blob([data], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `ai_evolution_${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            alert('💾 진화 데이터 저장 완료!\n이 파일을 깃허브에 올리세요!');
+        }
+        
+        function importEvolution() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    try {
+                        const imported = JSON.parse(event.target.result);
+                        aiEvolution = imported;
+                        localStorage.setItem('aiEvolution', JSON.stringify(aiEvolution));
+                        updateEvolutionUI();
+                        alert(`✅ 진화 데이터 불러오기 완료!\nLv.${aiEvolution.level} | ${aiEvolution.totalSamples.toLocaleString()}샘플`);
+                    } catch(e) {
+                        alert('❌ 파일 형식 오류!');
+                    }
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        }
+        
+        // 자동 백업 (10분마다)
+        setInterval(() => {
+            if (currentUser && aiEvolution.totalSamples > 0) {
+                // LocalStorage에 백업
+                localStorage.setItem('aiEvolution_backup', JSON.stringify({
+                    ...aiEvolution,
+                    backupTime: new Date().toISOString()
+                }));
+            }
+        }, 600000);  // 10분
+
+        // (기존 generateResponse 함수는 제거되었습니다 - getChatbotResponse로 대체됨)
 
         function login() {
             const name = document.getElementById('loginName').value.trim();
             if (!name) return alert('이름 입력!');
             currentUser = name;
             let users = DB.get('users');
-            if (!users.find(u => u.name === name)) {
+            const isNewUser = !users.find(u => u.name === name);
+            
+            if (isNewUser) {
                 users.push({name, joined: new Date().toISOString()});
                 DB.set('users', users);
             }
+            
+            localStorage.setItem('currentUser', name);
+            
             document.getElementById('loginScreen').classList.add('hidden');
             document.getElementById('mainApp').classList.remove('hidden');
             document.getElementById('userName').textContent = `👋 ${name}님`;
-            if (name === '강수현') document.getElementById('adminTab').classList.remove('hidden');
+            
+            if (name === '강수현') {
+                document.getElementById('adminTab').classList.remove('hidden');
+            } else {
+                // 강수현이 아니면 환영 효과!
+                showWelcome(name, isNewUser);
+            }
+            
+            updateEvolutionUI();
             render();
         }
+        
+        // 환영 효과
+        function showWelcome(name, isNew) {
+            // 환영 오버레이
+            const overlay = document.createElement('div');
+            overlay.className = 'welcome-overlay';
+            overlay.innerHTML = `
+                <div class="welcome-box">
+                    <h1>🎉</h1>
+                    <h2 style="font-size: 2em; margin: 20px 0;">${isNew ? '환영합니다!' : '다시 오신 것을 환영합니다!'}</h2>
+                    <p style="font-size: 1.5em; margin: 20px 0;">${name}님! 🎊</p>
+                    <p style="font-size: 1.2em; opacity: 0.9;">보드게임 동아리에 오신 것을 진심으로 환영합니다!</p>
+                    <p style="font-size: 1em; margin-top: 20px; opacity: 0.8;">ChatGPT + Gemini AI가 함께합니다! 🤖</p>
+                    <p style="font-size: 0.9em; margin-top: 30px; opacity: 0.7;">클릭하거나 3초 후 자동으로 닫힙니다</p>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+            
+            // 폭죽 효과
+            createFireworks();
+            
+            // 3초 후 자동 닫기
+            setTimeout(() => {
+                overlay.style.animation = 'fadeIn 0.5s reverse';
+                setTimeout(() => overlay.remove(), 500);
+            }, 3000);
+            
+            // 클릭해도 닫기
+            overlay.addEventListener('click', () => overlay.remove());
+        }
+        
+        // 폭죽 효과
+        function createFireworks() {
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const firework = document.createElement('div');
+                    firework.className = 'firework';
+                    firework.style.left = Math.random() * window.innerWidth + 'px';
+                    firework.style.top = Math.random() * window.innerHeight + 'px';
+                    firework.style.setProperty('--tx', (Math.random() - 0.5) * 300 + 'px');
+                    firework.style.setProperty('--ty', (Math.random() - 0.5) * 300 + 'px');
+                    firework.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                    document.body.appendChild(firework);
+                    setTimeout(() => firework.remove(), 1000);
+                }, i * 30);
+            }
+        }
 
-        function logout() { location.reload(); }
+        function logout() {
+            // 현재 사용자 정보 제거
+            localStorage.removeItem('currentUser');
+            currentUser = null;
+            
+            // 로그인 화면으로 복귀
+            document.getElementById('loginScreen').classList.remove('hidden');
+            document.getElementById('mainApp').classList.add('hidden');
+            
+            // 로그인 입력 필드 초기화
+            document.getElementById('loginName').value = '';
+        }
         
         function switchTab(tab) {
             currentTab = tab;
@@ -359,40 +1033,69 @@
             render();
         }
 
-        function toggleChat() { document.getElementById('chatWindow').classList.toggle('show'); }
-        function toggleTheme() { document.body.classList.toggle('dark'); }
-
-        function selectAI(ai) {
-            selectedAI = ai;
-            document.querySelectorAll('.ai-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('btn' + (ai === 'chatgpt' ? 'ChatGPT' : 'Gemini')).classList.add('active');
+        function toggleTheme() { 
+            document.body.classList.toggle('dark'); 
         }
 
-        async function sendMsg() {
-            const input = document.getElementById('chatInput');
-            const msg = input.value.trim();
-            if (!msg) return;
+        // 최적화된 무한 진화 시스템!
+        setInterval(() => {
+            if (!currentUser) return;
             
-            const msgs = document.getElementById('messages');
-            msgs.innerHTML += `<div class="chat-msg user">${msg}</div>`;
-            input.value = '';
+            // 안전한 초기화
+            if (!aiEvolution.totalSamples) aiEvolution.totalSamples = 0;
+            if (!aiEvolution.intelligence) aiEvolution.intelligence = 100;
+            if (!aiEvolution.exp) aiEvolution.exp = 0;
+            if (!aiEvolution.level) aiEvolution.level = 1;
             
-            // 생각 중
-            const thinking = document.createElement('div');
-            thinking.className = 'thinking';
-            thinking.innerHTML = '<span></span><span></span><span></span>';
-            msgs.appendChild(thinking);
-            msgs.scrollTop = msgs.scrollHeight;
+            // 기본 학습 속도
+            let baseSpeed = 10000;
             
-            await new Promise(r => setTimeout(r, 1000));
+            // 레벨 제한 (성능 최적화)
+            let effectiveLevel = Math.min(aiEvolution.level, 50);  // 최대 50레벨까지만 가속
+            let speedMultiplier = Math.pow(1.1, effectiveLevel);
             
-            thinking.remove();
-            const response = generateResponse(msg, selectedAI);
-            msgs.innerHTML += `<div class="chat-msg bot ${selectedAI}">${response.replace(/\n/g, '<br>')}</div>`;
-            msgs.scrollTop = msgs.scrollHeight;
-        }
-
+            // 최종 학습 속도
+            let samplesPerSecond = Math.floor(baseSpeed * speedMultiplier);
+            
+            // 샘플 학습!
+            aiEvolution.totalSamples += samplesPerSecond;
+            aiEvolution.intelligence += Math.floor(speedMultiplier);
+            aiEvolution.exp += Math.floor(samplesPerSecond / 1000);
+            
+            // 📚 자동 지식 생성! (1초에 10000개씩!)
+            const knowledgePerSecond = 10000;
+            autoGeneratedKnowledge += knowledgePerSecond;
+            
+            // 매 1000개마다 실제 지식베이스에 추가 (성능 최적화)
+            if (autoGeneratedKnowledge % 10000 === 0 && autoGeneratedKnowledge > 0) {
+                const newKnowledgeKey = `auto_knowledge_${autoGeneratedKnowledge}`;
+                if (!KNOWLEDGE[newKnowledgeKey] && !LEARNED[newKnowledgeKey]) {
+                    const knowledgeId = Math.floor(autoGeneratedKnowledge / 10000);
+                    LEARNED[newKnowledgeKey] = `🤖 자동 생성된 지식 #${knowledgeId.toLocaleString()}: 자동으로 학습한 ${knowledgeId}번째 지식입니다. 샘플 수: ${aiEvolution.totalSamples.toLocaleString()}, 지능: ${aiEvolution.intelligence.toLocaleString()}`;
+                    localStorage.setItem('aiLearned', JSON.stringify(LEARNED));
+                }
+            }
+            localStorage.setItem('autoKnowledgeCount', autoGeneratedKnowledge.toString());
+            
+            // 레벨업
+            if (aiEvolution.exp >= aiEvolution.level * 100) {
+                aiEvolution.level++;
+                aiEvolution.intelligence += 50;
+                aiEvolution.totalSamples += 1000000;
+            }
+            
+            // 5초마다만 저장 (성능 최적화!)
+            if (Date.now() % 5000 < 1000) {
+                localStorage.setItem('aiEvolution', JSON.stringify(aiEvolution));
+            }
+            
+            updateEvolutionUI();
+        }, 1000);
+        
         window.addEventListener('load', () => {
+            // 자동 생성 지식 카운트 불러오기
+            autoGeneratedKnowledge = parseInt(localStorage.getItem('autoKnowledgeCount') || '0');
+            
             const saved = localStorage.getItem('currentUser');
             if (saved) {
                 currentUser = saved;
@@ -400,9 +1103,69 @@
                 document.getElementById('mainApp').classList.remove('hidden');
                 document.getElementById('userName').textContent = `👋 ${saved}님`;
                 if (saved === '강수현') document.getElementById('adminTab').classList.remove('hidden');
+                updateEvolutionUI();
                 render();
             }
         });
+        
+        // 최적화된 대화 진화!
+        function superEvolve(msg) {
+            // 안전한 초기화
+            if (!aiEvolution.level) aiEvolution.level = 1;
+            if (!aiEvolution.totalSamples) aiEvolution.totalSamples = 0;
+            if (!aiEvolution.intelligence) aiEvolution.intelligence = 100;
+            if (!aiEvolution.exp) aiEvolution.exp = 0;
+            
+            // 레벨 보너스
+            const levelBonus = Math.min(aiEvolution.level, 20);  // 최대 20배
+            
+            // 경험치 및 지능
+            aiEvolution.exp += 20 * levelBonus;
+            aiEvolution.intelligence += 5 * levelBonus;
+            
+            // 대화 1회당 샘플
+            aiEvolution.totalSamples += 100000 * levelBonus;
+            
+            // 긴 질문 보너스
+            if (msg.length > 20) {
+                aiEvolution.exp += 10;
+                aiEvolution.totalSamples += 50000;
+            }
+            if (msg.length > 50) {
+                aiEvolution.exp += 20;
+                aiEvolution.totalSamples += 100000;
+            }
+            
+            // 키워드 보너스
+            const keywords = ['보드게임', 'ai', 'gpt', 'gemini', '추천', '설명'];
+            for (let kw of keywords) {
+                if (msg.toLowerCase().includes(kw)) {
+                    aiEvolution.exp += 5;
+                    aiEvolution.intelligence += 2;
+                    aiEvolution.totalSamples += 10000;
+                }
+            }
+            
+            // 레벨업 체크
+            if (aiEvolution.exp >= aiEvolution.level * 100) {
+                aiEvolution.level++;
+                aiEvolution.intelligence += 50;
+                aiEvolution.totalSamples += 1000000;
+                
+                // 레벨업 알림 (간단하게)
+                const msgs = document.getElementById('messages');
+                if (msgs) {
+                    msgs.innerHTML += `<div class="chat-msg bot" style="background: linear-gradient(135deg, #FFD700, #FFA500); color: #333; font-weight: bold; text-align: center;">
+                        🎉 레벨업! Lv.${aiEvolution.level} 🎉<br>
+                        ${(aiEvolution.totalSamples/1000000).toFixed(1)}M 샘플 학습!
+                    </div>`;
+                    msgs.scrollTop = msgs.scrollHeight;
+                }
+            }
+            
+            localStorage.setItem('aiEvolution', JSON.stringify(aiEvolution));
+            updateEvolutionUI();
+        }
     </script>
 </body>
 </html>
